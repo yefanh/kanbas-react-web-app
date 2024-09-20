@@ -120,6 +120,8 @@ export default function AssignmentEditor() {
         </tr>
 
       </table>
+      
+      <hr />
 
       {/* Action Buttons */}
       <div  style={{ textAlign: 'right' }}>
