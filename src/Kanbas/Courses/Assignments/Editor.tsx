@@ -123,30 +123,18 @@ export default function AssignmentEditor() {
 
             {/* set card border */}
             <div className="border p-3 rounded">
-
+              
               <tr>
                 <td>
                   <label htmlFor="wd-assign-to" className="form-label">Assign to</label><br />
-                  <div className="form-control mb-3 d-flex align-items-center">
-                    <div className="badge bg-light text-dark me-2 p-2 d-flex align-items-center">
-                      Everyone
-                      <button 
-                        type="button" 
-                        className="btn-close ms-2" 
-                        aria-label="Close" 
-                        style={{ fontSize: '0.75rem' }} 
-                        onClick={() => {/* handle removal of tag */}}
-                      >
-                      </button>
-                    </div>
-                  </div>
+                  <input id="wd-assign-to" value="Everyone" className="form-control mb-3" />
                 </td>
               </tr>
 
               <tr>
                 <td>
                   <label htmlFor="wd-due-date" className="form-label">Due</label><br />
-                  <input id="wd-due-date" type="date" value="2024-05-13" className="form-control mb-3"/>
+                  <input id="wd-due-date" type="datetime-local"value="2024-05-13T23:59" className="form-control mb-3"/>
                 </td>
               </tr>
 
