@@ -32,7 +32,7 @@ export default function Profile() {
         <option value="ADMIN">Admin</option>
         <option value="FACULTY">Faculty</option>
         <option value="STUDENT">Student</option>
-      </select><br/>
+      </select>
       {/* Add a link to sign out */}
       <Link to="/Kanbas/Account/Signin" 
         className="btn btn-danger w-100" >

@@ -120,11 +120,26 @@ export default function AssignmentEditor() {
             <td align="right" valign="top" className="pe-3">
               <label htmlFor="text-entry" className="form-label">Assign</label><br />
             </td>
+
+            {/* set card border */}
             <div className="border p-3 rounded">
+
               <tr>
                 <td>
                   <label htmlFor="wd-assign-to" className="form-label">Assign to</label><br />
-                  <input id="wd-assign-to" value="Everyone" className="form-control mb-3" />
+                  <div className="form-control mb-3 d-flex align-items-center">
+                    <div className="badge bg-light text-dark me-2 p-2 d-flex align-items-center">
+                      Everyone
+                      <button 
+                        type="button" 
+                        className="btn-close ms-2" 
+                        aria-label="Close" 
+                        style={{ fontSize: '0.75rem' }} 
+                        onClick={() => {/* handle removal of tag */}}
+                      >
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
 
@@ -147,7 +162,9 @@ export default function AssignmentEditor() {
                   <input id="wd-available-until" type="date" value="2024-05-20" className="form-control mb-3" />
                 </td>
               </tr>
+
             </div>
+
           </tr>
           
         </tbody>
