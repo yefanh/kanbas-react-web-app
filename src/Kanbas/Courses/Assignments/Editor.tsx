@@ -29,24 +29,24 @@ export default function AssignmentEditor() {
       </div>
 
       {/* Assignment Points */}
-      <table className="table">
+      <table>
         <tbody>
-          <tr>
+          <tr className="mb-3">
             <td align="right" valign="top" className="pe-3">
               <label htmlFor="wd-points" className="form-label">Points</label>
             </td>
             <td>
-              <input id="wd-points" value={100} className="form-control" />
+              <input id="wd-points" value={100} className="form-control mb-3" />
             </td>
           </tr>
 
           {/* Assignment Group */}
-          <tr>
+          <tr className="mb-3">
             <td align="right" valign="top" className="pe-3">
               <label htmlFor="wd-group" className="form-label">Assignment Group</label>
             </td>
             <td>
-              <select id="wd-group" className="form-control">
+              <select id="wd-group" className="form-select mb-3">
                 <option value="assignments">ASSIGNMENTS</option>
                 <option value="quizzes">QUIZZES</option>
                 <option value="exams">EXAMS</option>
@@ -61,7 +61,7 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-display-grade-as" className="form-label">Display Grade as</label>
             </td>
             <td>
-              <select id="wd-display-grade-as" className="form-control">
+              <select id="wd-display-grade-as" className="form-select mb-3">
                 <option value="percentage">Percentage</option>
                 <option value="points">Points</option>
                 <option value="complete/incomplete">Complete/Incomplete</option>
@@ -76,34 +76,42 @@ export default function AssignmentEditor() {
             </td>
 
             <td>
-              <select id="wd-submission-type" className="form-control mb-2">
-                <option value="online">Online</option>
-                <option value="on-paper">On Paper</option>
-                <option value="none">No Submission</option>
-              </select>
+              <div className="border p-3 rounded mb-4">
+                <select id="wd-submission-type" className="form-select mb-3">
+                  <option value="online">Online</option>
+                  <option value="on-paper">On Paper</option>
+                  <option value="none">No Submission</option>
+                </select> 
 
-              {/* Online Entry Options */}
-              <label className="form-label">Online Entry Options</label><br />
-              <div className="form-check">
-                <input type="checkbox" id="text-entry" className="form-check-input" />
-                <label htmlFor="text-entry" className="form-check-label">Text Entry</label>
+                {/* Online Entry Options */}
+                <label className="form-label mb-3">Online Entry Options</label><br />
+
+                <div className="form-check">
+                  <input type="checkbox" id="text-entry" className="form-check-input" />
+                  <label htmlFor="text-entry" className="form-check-label mb-3">Text Entry</label>
+                </div>
+
+                <div className="form-check">
+                  <input type="checkbox" id="website-url" className="form-check-input" />
+                  <label htmlFor="website-url" className="form-check-label mb-3">Website URL</label>
+                </div>
+
+                <div className="form-check">
+                  <input type="checkbox" id="media-recordings" className="form-check-input" />
+                  <label htmlFor="media-recordings" className="form-check-label mb-3">Media Recordings</label>
+                </div>
+
+                <div className="form-check">
+                  <input type="checkbox" id="student-annotation" className="form-check-input" />
+                  <label htmlFor="student-annotation" className="form-check-label mb-3">Student Annotation</label>
+                </div>
+
+                <div className="form-check">
+                  <input type="checkbox" id="file-uploads" className="form-check-input" />
+                  <label htmlFor="file-uploads" className="form-check-label mb-3">File Uploads</label>
+                </div>
               </div>
-              <div className="form-check">
-                <input type="checkbox" id="website-url" className="form-check-input" />
-                <label htmlFor="website-url" className="form-check-label">Website URL</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="media-recordings" className="form-check-input" />
-                <label htmlFor="media-recordings" className="form-check-label">Media Recordings</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="student-annotation" className="form-check-input" />
-                <label htmlFor="student-annotation" className="form-check-label">Student Annotation</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="file-uploads" className="form-check-input" />
-                <label htmlFor="file-uploads" className="form-check-label">File Uploads</label>
-              </div>
+
             </td>
           </tr>
 
@@ -112,33 +120,36 @@ export default function AssignmentEditor() {
             <td align="right" valign="top" className="pe-3">
               <label htmlFor="text-entry" className="form-label">Assign</label><br />
             </td>
+            <div className="border p-3 rounded">
+              <tr>
+                <td>
+                  <label htmlFor="wd-assign-to" className="form-label">Assign to</label><br />
+                  <input id="wd-assign-to" value="Everyone" className="form-control mb-3" />
+                </td>
+              </tr>
 
-            <td>
-              <label htmlFor="wd-assign-to" className="form-label">Assign to</label><br />
-              <input id="wd-assign-to" value="Everyone" className="form-control mb-2" />
-            </td>
-          </tr>
+              <tr>
+                <td>
+                  <label htmlFor="wd-due-date" className="form-label">Due</label><br />
+                  <input id="wd-due-date" type="date" value="2024-05-13" className="form-control mb-3"/>
+                </td>
+              </tr>
 
-          <tr>
-            <td align="right" valign="top" className="pe-3">
-              <label htmlFor="wd-due-date" className="form-label">Due</label><br />
-            </td>
-            <td>
-              <input id="wd-due-date" type="datetime-local" value="2024-05-13T23:59" className="form-control mb-2" />
-            </td>
-          </tr>
+              <tr>
+                {/* Available From and Until on the same row */}
+                <td>
+                  <label htmlFor="wd-available-from" className="form-label">Available from</label><br />
+                  <input id="wd-available-from" type="date" value="2024-05-06" className="form-control mb-3" />  
+                </td>
 
-          <tr>
-            {/* Available From and Until on the same row */}
-            <td align="right" valign="top" className="pe-3">
-              <label htmlFor="wd-available-from" className="form-label">Available from</label><br />
-              <input id="wd-available-from" type="datetime-local" value="2024-05-06T00:00" className="form-control mb-2" />  
-            </td>
-            <td>
-              <label htmlFor="wd-available-until" className="form-label">Until</label><br />
-              <input id="wd-available-until" type="datetime-local" value="2024-05-20T00:00" className="form-control mb-2" />
-            </td>
+                <td>
+                  <label htmlFor="wd-available-until" className="form-label">Until</label><br />
+                  <input id="wd-available-until" type="date" value="2024-05-20" className="form-control mb-3" />
+                </td>
+              </tr>
+            </div>
           </tr>
+          
         </tbody>
       </table>
 
@@ -147,7 +158,7 @@ export default function AssignmentEditor() {
       {/* Action Buttons */}
       <div className="text-end mt-3">
         <button className="btn btn-secondary me-2">Cancel</button>
-        <button className="btn btn-success">Save</button>
+        <button className="btn btn-success btn-danger">Save</button>
       </div>
     </div>
   );
