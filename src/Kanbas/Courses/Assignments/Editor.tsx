@@ -1,16 +1,31 @@
 import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+import * as db from '../../Database'; // import the database
 
 export default function AssignmentEditor() {
+  // get the courseId and assignmentId from the URL
+  const { courseId, aid } = useParams();
+
+  // find the assignment from the database
+  const assignment = db.assignments.find((a: any) => a._id === aid);
+
+  // if the assignment is not found, return a message
+  console.log(assignment, aid);
+  if (!assignment) {
+    return <div>Assignment not found</div>;
+  }
+
   return (
     <div id="wd-assignments-editor" className="container mt-4">
       {/* Assignment Name */}
       <label htmlFor="wd-name" className="form-label">
-        <h3>Assignment Name</h3>
+        <h3>{assignment.title}</h3> {/* dynamic to show the assignment title */}
       </label>
       <input
         id="wd-name"
-        value="A1 - ENV + HTML"
+        value={assignment.title}
         className="form-control mb-4"
+        readOnly
       />
 
       {/* Assignment Description */}
@@ -22,23 +37,7 @@ export default function AssignmentEditor() {
         className="form-control mb-4"
         style={{ height: 'auto', whiteSpace: 'pre-wrap' }}
       >
-        <p>
-          The assignment is <span className="text-danger">available online</span>
-          .<br />
-          Submit a link to the landing page of your Web application running on
-          Netlify.
-        </p>
-        <p>The landing page should include the following:</p>
-        <ul>
-          <li>Your full name and section</li>
-          <li>Links to each of the lab assignments</li>
-          <li>Link to the Kanbas application</li>
-          <li>Links to all relevant source code repositories</li>
-        </ul>
-        <p>
-          The Kanbas application should include a link to navigate back to the
-          landing page.
-        </p>
+        <p>{assignment.description || "No description available"}</p>
       </div>
 
       {/* Assignment Points */}
@@ -49,7 +48,12 @@ export default function AssignmentEditor() {
           </label>
         </div>
         <div className="col-md-9">
-          <input id="wd-points" value={100} className="form-control mb-3" />
+          <input
+            id="wd-points"
+            value={assignment.points || 100} // if points are not available, set to 100
+            className="form-control mb-3"
+            readOnly
+          />
         </div>
       </div>
 
@@ -231,8 +235,12 @@ export default function AssignmentEditor() {
 
       {/* Action Buttons */}
       <div className="text-end mt-3">
-        <button className="btn btn-secondary me-2">Cancel</button>
-        <button className="btn btn-success btn-danger">Save</button>
+        <Link to={`/Kanbas/Courses/${courseId}/Assignments`} className="btn btn-secondary me-2">
+          Cancel
+        </Link>
+        <Link to={`/Kanbas/Courses/${courseId}/Assignments`} className="btn btn-success">
+          Save
+        </Link>
       </div>
     </div>
   );
