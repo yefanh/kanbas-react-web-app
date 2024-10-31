@@ -1,0 +1,18 @@
+/* Counter.css */
+.button-container {
+  color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-container.green {
+  background-color: green;
+  margin-right: 10px;
+}
+
+.button-container.red {
+  background-color: darkred;
+}
