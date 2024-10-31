@@ -1,3 +1,4 @@
+//src/Kanbas/Courses/Modules/index.tsx
 import ModulesControls from "./ModulesControls";
 import { BsGripVertical } from "react-icons/bs";
 import LessonControlButtons from "./LessonControlButtons";
@@ -5,12 +6,17 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
 import * as db from "../../Database";
 import React, { useState } from "react";
-
+import { addModule, editModule, updateModule, deleteModule }
+  from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Modules() {
   const { cid } = useParams();
   const [modules, setModules] = useState<any[]>(db.modules);
   const [moduleName, setModuleName] = useState("");
+
+  const { modules } = useSelector((state: any) => state.modulesReducer);
+  const dispatch = useDispatch();
 
   const addModule = () => {
     setModules([ ...modules, { _id: new Date().getTime().toString(),
@@ -37,7 +43,7 @@ export default function Modules() {
   
 
   return (
-    <div>
+    <div className="wd-modules">
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={addModule}/>
       <br /><br /><br /><br />
       <ul id="wd-modules" className="list-group rounded-0">
