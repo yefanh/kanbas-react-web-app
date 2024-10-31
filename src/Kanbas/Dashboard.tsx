@@ -15,38 +15,23 @@ interface Course {
   description: string;
 }
 
-export default function Dashboard() {
+interface DashboardProps {
+  courses: Course[];
+  course: Course;
+  setCourse: (course: Course) => void;
+  addNewCourse: () => void;
+  deleteCourse: (courseId: string) => void;
+  updateCourse: () => void;
+}
 
-  const [courses, setCourses] = useState<any[]>(db.courses);
-
-  const [course, setCourse] = useState<any>({   // convert course into a state variable so we can change it and force a redraw of the UI
-    _id: "0", name: "New Course", number: "New Number",
-    startDate: "2023-09-10", endDate: "2023-12-15",
-    image: "/images/reactjs.jpg", description: "New Description"
-  });
-
-  const updateCourse = () => {
-    setCourses(
-      courses.map((c) => {
-        if (c._id === course._id) {
-          return course;
-        } else {
-          return c;
-        }
-      })
-    );
-  };
-
-  const addNewCourse = () => {
-    const newCourse = { ...course,
-                        _id: new Date().getTime().toString() };
-    setCourses([...courses, { ...course, ...newCourse }]);
-  };
-
-  // add deleteCourse event handler accepting ID of course to remove by filtering out the course by its ID
-  const deleteCourse = (courseId: string) => {
-    setCourses(courses.filter((course) => course._id !== courseId));
-  };
+export default function Dashboard({
+    courses,
+    course,
+    setCourse,
+    addNewCourse,
+    deleteCourse,
+    updateCourse
+  }: DashboardProps) {
 
   return (
     <div id="wd-dashboard">
@@ -120,3 +105,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

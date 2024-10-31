@@ -8,10 +8,9 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from 'react-icons/fa';
 import PeopleTable from "./People/Table";
 
-
-export default function Courses({ courses }: { courses: any[]; }) {
+export default function Courses({ courses }: { courses: any[]; }) { // don't load courses from Database accept courses from Kanbas
   const { cid } = useParams();
-  const course = courses.find((course) => course._id === cid);
+  const course = courses.find((course) => course._id === cid);  // find the course by its ID
   const { pathname } = useLocation();
   return (
     <div id="wd-courses">

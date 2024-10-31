@@ -37,21 +37,18 @@ export default function Kanbas() {
       <KanbasNavigation />
         <div  className="wd-main-content-offset p-3">
           <Routes>
-            <Route path="/" element={<Navigate to="Account" />} />  {/* show account page by default */}
+            <Route path="/" element={<Navigate to="Dashboard" />} />  {/* show account page by default */}
             <Route path="/Account/*" element={<Account />} />  {/* load account component */}
-            <Route path="/Dashboard" element={<Dashboard />} />  {/* load dashboard component */}
 
-            <Route path="/Courses" 
-              element={ 
-                <Dashboard
+            <Route path="Dashboard" element={
+              <Dashboard
                   courses={courses}
                   course={course}
                   setCourse={setCourse}
                   addNewCourse={addNewCourse}
                   deleteCourse={deleteCourse}
                   updateCourse={updateCourse}
-                />
-              } 
+              />} 
             />  
 
             {/* Add Courses route, ":cid" is a dynamic parameter that represents the course 
