@@ -1,3 +1,4 @@
+//src/Labs/Lab4/PassingFunctions.tsx
 import React from "react";
 import store from "./Kanbas/store"; // import the redux store
 import { Provider } from "react-redux"; //import the redux store provider
@@ -8,7 +9,7 @@ function App() {
   return (
     <HashRouter>
       {/* wrap your application with the Provider so all child elements can read and write to the store */}
-      <Provider store={store}></Provider>
+      <Provider store={store}>
         <div>
           <Routes>
             <Route path="/" element={<Navigate to="Kanbas" />} />

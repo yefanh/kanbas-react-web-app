@@ -6,13 +6,12 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
 import * as db from "../../Database";
 import React, { useState } from "react";
-import { addModule, editModule, updateModule, deleteModule }
-  from "./reducer";
+import { addModule, editModule, updateModule, deleteModule }  from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function Modules() {
   const { cid } = useParams();
-  const [modules, setModules] = useState<any[]>(db.modules);
+  //const [modules, setModules] = useState<any[]>(db.modules);
   const [moduleName, setModuleName] = useState("");
 
   const { modules } = useSelector((state: any) => state.modulesReducer);
@@ -44,8 +43,12 @@ export default function Modules() {
 
   return (
     <div className="wd-modules">
-      <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={addModule}/>
-      <br /><br /><br /><br />
+      
+      <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
+          dispatch(addModule({ name: moduleName, course: cid }));
+          setModuleName("");
+        }} />
+
       <ul id="wd-modules" className="list-group rounded-0">
         {filteredModules.map((module: any) => (
           <li key={module._id} className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
@@ -59,12 +62,18 @@ export default function Modules() {
               {!module.editing && module.name}
               { module.editing && (
                 <input className="form-control w-50 d-inline-block"
-                      onChange={(e) => updateModule({ ...module, name: e.target.value })}
+
+                      onChange={(e) =>
+                        dispatch(updateModule({ ...module, name: e.target.value })
+                        )
+                      }
+
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                          updateModule({ ...module, editing: false });
+                          dispatch(updateModule({ ...module, editing: false }));
                         }
                       }}
+                      
                       defaultValue={module.name}/>
               )}
 
@@ -72,10 +81,14 @@ export default function Modules() {
               {/* Implement the ModuleControlButtons component with the moduleId and deleteModule props */}
               <ModuleControlButtons 
                 moduleId={module._id}  
-                deleteModule={deleteModule}
+
+                deleteModule={(moduleId) => {
+                  dispatch(deleteModule(moduleId));
+                  }
+                }
 
                 // pass editModule function to so if pencil is clicked we can set editing to true
-                editModule={editModule}/>
+                editModule={(moduleId) => dispatch(editModule(moduleId))} />
 
             </div>
 
