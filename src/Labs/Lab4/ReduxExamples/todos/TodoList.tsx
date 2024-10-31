@@ -1,4 +1,7 @@
 //src/Labs/Lab4/ReduxExamples/todos/TodoList.tsx
+import TodoForm from "./TodoForm";
+import TodoItem from "./TodoItem";
+
 import React, { useState } from "react";
 export default function TodoList() {
   const [todos, setTodos] = useState([
@@ -25,30 +28,17 @@ export default function TodoList() {
     <div>
       <h2>Todo List</h2>
       <ul className="list-group">
-        <li className="list-group-item">
-          <button onClick={() => addTodo(todo)}
-                  id="wd-add-todo-click">Add</button>
-          <button onClick={() => updateTodo(todo)}
-                  id="wd-update-todo-click">
-            Update </button>
-          <input value={todo.title}
-            onChange={(e) =>
-              setTodo({ ...todo,
-                title: e.target.value })
-            }
-          />
-        </li>
-        {todos.map((todo) => (
-          <li key={todo.id} className="list-group-item">
-            <button onClick={() => deleteTodo(todo.id)}
-                    id="wd-delete-todo-click">
-              Delete </button>
-            <button onClick={() => setTodo(todo)}
-                    id="wd-set-todo-click">
-              Edit </button>
-            {todo.title}
-          </li>
-        ))}
+        <TodoForm
+            todo={todo}
+            setTodo={setTodo}
+            addTodo={addTodo}
+            updateTodo={updateTodo}/>
+          {todos.map((todo) => (
+            <TodoItem
+              todo={todo}
+              deleteTodo={deleteTodo}
+              setTodo={setTodo} />
+          ))}
       </ul>
       <hr/>
     </div>
