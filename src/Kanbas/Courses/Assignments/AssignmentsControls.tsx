@@ -1,7 +1,10 @@
 // src/Kanbas/Courses/Assignments/AssignmentsControls.tsx
 import { FaSearch, FaPlus } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom"; 
 
 export default function AssignmentsControls() {
+  const { cid: courseId } = useParams();
+  console.log("AssignmentsControls: courseId =", courseId);
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
       {/* Search Input */}
@@ -19,9 +22,11 @@ export default function AssignmentsControls() {
         <button id="wd-add-assignment-group" className="btn btn-secondary me-2">
           <FaPlus className="me-1" /> Group
         </button>
-        <button id="wd-add-assignment" className="btn btn-danger">
+
+        <Link to={`/Kanbas/Courses/${courseId}/Assignments/Editor`} className="btn btn-danger">
           <FaPlus className="me-1" /> Assignment
-        </button>
+        </Link>
+
       </div>
     </div>
   );

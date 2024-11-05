@@ -23,12 +23,14 @@ export default function Courses({ courses }: { courses: any[]; }) { // don't loa
         <div className="d-none d-md-block">
           <CoursesNavigation />
         </div>
-      <div className="flex-fill"></div>
+      <div></div>
             <Routes>
               <Route path="/" element={<Navigate to="Home" />} />
               <Route path="Home" element={<Home />} />
               <Route path="Modules" element={<Modules />} />
               <Route path="Assignments" element={<Assignments />} />
+              <Route path="Assignments/Editor" element={<AssignmentEditor />} />
+
               <Route path="Assignments/:aid" element={<AssignmentEditor />} />
               <Route path="People" element={<PeopleTable />} />
             </Routes>

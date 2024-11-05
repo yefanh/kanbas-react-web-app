@@ -10,7 +10,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 
 export default function CourseStatus() {
   return (
-    <div id="wd-course-status" style={{ width: "300px" }}>
+    <div id="wd-course-status" style={{ width: "300px", float: "right"}}>
       <h2>Course Status</h2>
 
       <div className="d-flex">

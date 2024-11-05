@@ -4,6 +4,7 @@ import { BsGripVertical } from "react-icons/bs";
 import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
+import "../../styles.css";
 
 import React, { useState } from "react";
 import { addModule, editModule, updateModule, deleteModule }  from "./reducer";
@@ -31,7 +32,7 @@ export default function Modules() {
         }} />
       )}
 
-      <ul id="wd-modules" style={{width:"100%"}} className="list-group rounded-0">
+      <ul id="wd-modules"  className="list-group rounded-0">
         {filteredModules.map((module: any) => (
           <li key={module._id} className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
 

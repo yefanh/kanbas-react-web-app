@@ -32,7 +32,7 @@ export default function Assignments() {
           </div>
 
           <ul id="wd-assignments-list" className="list-group rounded-0">
-            {/* 动态渲染 filteredAssignments */}
+            {/* dynamically render the assignments */}
             {filteredAssignments.map((assignment: any) => (
               <AssignmentItem
                 key={assignment._id}
