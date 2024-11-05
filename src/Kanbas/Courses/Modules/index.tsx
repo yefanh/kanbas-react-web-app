@@ -13,6 +13,7 @@ export default function Modules() {
   const { cid } = useParams();
   const [moduleName, setModuleName] = useState("");
 
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
 
@@ -23,12 +24,14 @@ export default function Modules() {
   return (
     <div className="wd-modules">
       
+      {currentUser && currentUser.role === "FACULTY" && (
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
           dispatch(addModule({ name: moduleName, course: cid }));
           setModuleName("");
         }} />
+      )}
 
-      <ul id="wd-modules" className="list-group rounded-0">
+      <ul id="wd-modules" style={{width:"100%"}} className="list-group rounded-0">
         {filteredModules.map((module: any) => (
           <li key={module._id} className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
 
@@ -39,7 +42,8 @@ export default function Modules() {
               {/* show name if not editing show input field if editing when typing edit the module's name
               if "Enter" key is pressed then set editing field to false so we hide the text field */}
               {!module.editing && module.name}
-              { module.editing && (
+
+              { module.editing  && currentUser && currentUser.role === "FACULTY" && (
                 <input className="form-control w-50 d-inline-block"
 
                       onChange={(e) =>
@@ -56,8 +60,8 @@ export default function Modules() {
                       defaultValue={module.name}/>
               )}
 
-
-              {/* Implement the ModuleControlButtons component with the moduleId and deleteModule props */}
+              {currentUser && currentUser.role === "FACULTY" && (
+              
               <ModuleControlButtons 
                 moduleId={module._id}  
 
@@ -67,15 +71,19 @@ export default function Modules() {
                 }
 
                 // pass editModule function to so if pencil is clicked we can set editing to true
-                editModule={(moduleId) => dispatch(editModule(moduleId))} />
-
+                editModule={(moduleId) => dispatch(editModule(moduleId))} 
+              />
+              
+              )}
             </div>
 
             {module.lessons && module.lessons.length > 0 && (
               <ul className="wd-lessons list-group rounded-0">
                 {module.lessons.map((lesson: any) => (
                   <li key={lesson._id} className="wd-lesson list-group-item p-3 ps-1">
-                    <BsGripVertical className="me-2 fs-3" /> {lesson.name} <LessonControlButtons />
+                    <BsGripVertical className="me-2 fs-3" /> 
+                    {lesson.name}  
+                    {currentUser && currentUser.role === "FACULTY" && <LessonControlButtons />}
                   </li>
                 ))}
               </ul>

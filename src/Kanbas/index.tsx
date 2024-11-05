@@ -7,6 +7,7 @@ import Courses from "./Courses";
 import "./styles.css";
 import * as db from "./Database";
 import { useState } from "react";
+import ProtectedRoute from "./Account/ProtectedRoute";
 
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>(db.courses);
@@ -40,21 +41,20 @@ export default function Kanbas() {
             <Route path="/" element={<Navigate to="Dashboard" />} />  {/* show account page by default */}
             <Route path="/Account/*" element={<Account />} />  {/* load account component */}
 
-            <Route path="Dashboard" element={
+            <Route path="Dashboard" element={<ProtectedRoute>
               <Dashboard
                   courses={courses}
                   course={course}
                   setCourse={setCourse}
                   addNewCourse={addNewCourse}
                   deleteCourse={deleteCourse}
-                  updateCourse={updateCourse}
-              />} 
-            />  
+                  updateCourse={updateCourse}/>
+            </ProtectedRoute> }/>
 
             {/* Add Courses route, ":cid" is a dynamic parameter that represents the course 
             ID means When a user clicks on a different course, a different course page is displayed 
             based on this ID*/}
-            <Route path="/Courses/:cid/*" element={<Courses courses={courses}/>} />
+            <Route path="/Courses/:cid/*" element={<ProtectedRoute> <Courses courses={courses}/> </ProtectedRoute>} />
             <Route path="/Calendar" element={<h1>Calendar</h1>} />
             <Route path="/Inbox" element={<h1>Inbox</h1>} />
           </Routes>

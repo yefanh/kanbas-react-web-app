@@ -1,14 +1,17 @@
 // src/Kanbas/Account/Navigation.tsx
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 export default function AccountNavigation() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+  //if currentUser is not null, display Profile, else display Signin and Signup
+  const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
+
   // useState to keep track of the active link
   const [activeLink, setActiveLink] = useState("Signin");
-
-  // Array of links for Account Navigation
-  const links = ["Signin", "Signup", "Profile"];
-
+  
   // Function to handle link clicks
   const handleLinkClick = (linkName: string) => {
     setActiveLink(linkName); // set the active link
