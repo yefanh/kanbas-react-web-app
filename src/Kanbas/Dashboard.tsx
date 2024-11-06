@@ -1,8 +1,9 @@
 //src/Kanbas/Dashboard.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as db from "./Database";
+import { addEnrollment, removeEnrollment } from "./Enrollments/reducer";
 
 // Define the Course interface
 interface Course {
@@ -40,32 +41,22 @@ export default function Dashboard({
   deleteCourse,
   updateCourse,
 }: DashboardProps) {
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { enrollments } = db;
+  const dispatch = useDispatch();
 
-  // Use state to manage enrollments
-  const [enrollmentsState, setEnrollmentsState] = useState<Enrollment[]>(enrollments);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+  
   const [showAllCourses, setShowAllCourses] = useState(false);
 
   // Define the handleEnroll function
   function handleEnroll(courseId: string) {
-    const newEnrollment: Enrollment = {
-      user: currentUser._id,
-      course: courseId,
-    };
-    setEnrollmentsState([...enrollmentsState, newEnrollment]);
+    const newEnrollment: Enrollment = { user: currentUser._id, course: courseId };
+    dispatch(addEnrollment(newEnrollment));
   }
 
   // Define the handleUnenroll function
   function handleUnenroll(courseId: string) {
-    const updatedEnrollments = enrollmentsState.filter(
-      (enrollment) =>
-        !(
-          enrollment.user === currentUser._id &&
-          enrollment.course === courseId
-        )
-    );
-    setEnrollmentsState(updatedEnrollments);
+    dispatch(removeEnrollment(courseId));
   }
 
   return (
@@ -126,39 +117,35 @@ export default function Dashboard({
       <hr />
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses
-            .filter((course) => {
-              if (currentUser.role === "STUDENT") {
-                if (showAllCourses) {
-                  // Show all courses
-                  return true;
-                } else {
-                  // Show only enrolled courses
-                  return enrollmentsState.some(
-                    (enrollment) =>
-                      enrollment.user === currentUser._id &&
-                      enrollment.course === course._id
-                  );
-                }
-              } else if (currentUser.role === "FACULTY") {
-                // Faculty sees all courses
-                return enrollmentsState.some(
-                  (enrollment) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-                );
-              }
-              // Other roles, adjust as needed
-              return false;
-            })
-            .map((course) => {
-              // Determine if the student is enrolled in the course
-              const isEnrolled = enrollmentsState.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-              );
-
+        {courses
+      .filter((course) => {
+        if (currentUser.role === "STUDENT") {
+          // student: show all courses or only enrolled courses
+          if (showAllCourses) {
+            return true; // include all courses
+          } else {
+            // only include courses that the student is enrolled in
+            return enrollments.some(
+              (enrollment: Enrollment) =>
+                enrollment.user === currentUser._id &&
+                enrollment.course === course._id
+            );
+          }
+        } else {
+          // teacher or other roles: show corresponding courses in db
+          return enrollments.some(
+            (enrollment: Enrollment) =>
+              enrollment.user === currentUser._id &&
+              enrollment.course === course._id
+          );
+        }
+      })
+      .map((course) => {
+        const isEnrolled = enrollments.some(
+          (enrollment: Enrollment) =>
+            enrollment.user === currentUser._id &&
+            enrollment.course === course._id
+        );
               return (
                 <div
                   className="wd-dashboard-course col"
