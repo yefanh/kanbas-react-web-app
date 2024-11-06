@@ -37,9 +37,21 @@ export default function Dashboard({
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { enrollments } = db;
 
+  const [showAllCourses, setShowAllCourses] = useState(false);
+
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+
+      {/* 添加“Enrollments”按钮 */}
+      {currentUser && currentUser.role === "STUDENT" && (
+        <button
+          className="btn btn-primary float-end"
+          onClick={() => setShowAllCourses(!showAllCourses)}
+        >
+          Enrollments
+        </button>
+      )}
       
       {currentUser && currentUser.role === "FACULTY" && (
         <>
@@ -67,13 +79,27 @@ export default function Dashboard({
       <div id="wd-dashboard-courses" className="row">
 
         <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses
-            .filter((course) =>
-              enrollments.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-                ))
+        {courses
+          .filter((course) => {
+            if (currentUser.role === "STUDENT") {
+              if (showAllCourses) {
+                // 显示所有课程
+                return true;
+              } else {
+                // 仅显示已选课程
+                return enrollments.some(
+                  (enrollment) =>
+                    enrollment.user === currentUser._id &&
+                    enrollment.course === course._id
+                );
+              }
+            } else if (currentUser.role === "FACULTY") {
+              // 教师角色显示所有课程
+              return true;
+            }
+            // 其他角色，根据需要处理
+            return false;
+          })
             .map((course) => (
               <div className="wd-dashboard-course col" style={{ width: "300px" }} >
 
