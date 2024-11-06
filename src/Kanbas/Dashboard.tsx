@@ -142,7 +142,11 @@ export default function Dashboard({
                 }
               } else if (currentUser.role === "FACULTY") {
                 // Faculty sees all courses
-                return true;
+                return enrollmentsState.some(
+                  (enrollment) =>
+                    enrollment.user === currentUser._id &&
+                    enrollment.course === course._id
+                );
               }
               // Other roles, adjust as needed
               return false;
