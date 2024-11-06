@@ -1,11 +1,11 @@
-//src/Kanbas/Dashboard.tsx
+// src/Kanbas/Dashboard.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as db from "./Database";
 import { addEnrollment, removeEnrollment } from "./Enrollments/reducer";
 
-// Define the Course interface
+// 定义 Course 接口
 interface Course {
   _id: string;
   name: string;
@@ -15,46 +15,90 @@ interface Course {
   department: string;
   credits: number;
   description: string;
+  facultyId?: string; // 新增的属性
 }
 
-// Define the Enrollment interface
+// 定义 Enrollment 接口
 interface Enrollment {
-  _id?: string; // Make _id optional
+  _id?: string; // _id 可选
   user: string;
   course: string;
 }
 
-interface DashboardProps {
-  courses: Course[];
-  course: Course;
-  setCourse: (course: Course) => void;
-  addNewCourse: () => void;
-  deleteCourse: (courseId: string) => void;
-  updateCourse: () => void;
-}
-
-export default function Dashboard({
-  courses,
-  course,
-  setCourse,
-  addNewCourse,
-  deleteCourse,
-  updateCourse,
-}: DashboardProps) {
+export default function Dashboard() {
   const dispatch = useDispatch();
+
+  // 使用 useState 管理 courses 和 course 状态
+  const [courses, setCourses] = useState<Course[]>(db.courses);
+  const [course, setCourse] = useState<Course>({
+    _id: "",
+    name: "",
+    number: "",
+    startDate: "",
+    endDate: "",
+    department: "",
+    credits: 0,
+    description: "",
+    facultyId: "", // 初始化 facultyId
+  });
 
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-  
+
   const [showAllCourses, setShowAllCourses] = useState(false);
 
-  // Define the handleEnroll function
+  // 定义添加新课程的函数
+  const addNewCourse = () => {
+    const newCourse = {
+      ...course,
+      _id: new Date().getTime().toString(),
+      facultyId: currentUser._id, // 设置 facultyId 为当前用户 ID
+    };
+    setCourses([...courses, newCourse]);
+    // 清空课程表单
+    setCourse({
+      _id: "",
+      name: "",
+      number: "",
+      startDate: "",
+      endDate: "",
+      department: "",
+      credits: 0,
+      description: "",
+      facultyId: currentUser._id, // 重置 facultyId
+    });
+  };
+
+  // 定义删除课程的函数
+  const deleteCourse = (courseId: string) => {
+    setCourses(courses.filter((course) => course._id !== courseId));
+  };
+
+  // 定义更新课程的函数
+  const updateCourse = () => {
+    setCourses(
+      courses.map((c) => (c._id === course._id ? course : c))
+    );
+    // 清空课程表单
+    setCourse({
+      _id: "",
+      name: "",
+      number: "",
+      startDate: "",
+      endDate: "",
+      department: "",
+      credits: 0,
+      description: "",
+      facultyId: currentUser._id,
+    });
+  };
+
+  // 定义选课和退课的函数
   function handleEnroll(courseId: string) {
     const newEnrollment: Enrollment = { user: currentUser._id, course: courseId };
     dispatch(addEnrollment(newEnrollment));
   }
 
-  // Define the handleUnenroll function
   function handleUnenroll(courseId: string) {
     dispatch(removeEnrollment(courseId));
   }
@@ -63,16 +107,17 @@ export default function Dashboard({
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
 
-      {/* Add "Enrollments" button */}
+      {/* 学生用户的“Enrollments”按钮 */}
       {currentUser && currentUser.role === "STUDENT" && (
         <button
           className="btn btn-primary float-end"
           onClick={() => setShowAllCourses(!showAllCourses)}
         >
-          Enrollments
+          {showAllCourses ? "My Courses" : "Enrollments"}
         </button>
       )}
 
+      {/* 教师用户的新增课程表单 */}
       {currentUser && currentUser.role === "FACULTY" && (
         <>
           <h5>
@@ -95,15 +140,23 @@ export default function Dashboard({
           </h5>
           <br />
 
-          {/* Add input elements for each field in the course state variable */}
+          {/* 课程表单 */}
           <input
             value={course.name}
             className="form-control mb-2"
+            placeholder="Course Name"
             onChange={(e) => setCourse({ ...course, name: e.target.value })}
+          />
+          <input
+            value={course.number}
+            className="form-control mb-2"
+            placeholder="Course Number"
+            onChange={(e) => setCourse({ ...course, number: e.target.value })}
           />
           <textarea
             value={course.description}
-            className="form-control"
+            className="form-control mb-2"
+            placeholder="Course Description"
             onChange={(e) =>
               setCourse({ ...course, description: e.target.value })
             }
@@ -117,35 +170,34 @@ export default function Dashboard({
       <hr />
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-        {courses
-      .filter((course) => {
-        if (currentUser.role === "STUDENT") {
-          // student: show all courses or only enrolled courses
-          if (showAllCourses) {
-            return true; // include all courses
-          } else {
-            // only include courses that the student is enrolled in
-            return enrollments.some(
-              (enrollment: Enrollment) =>
-                enrollment.user === currentUser._id &&
-                enrollment.course === course._id
-            );
-          }
-        } else {
-          // teacher or other roles: show corresponding courses in db
-          return enrollments.some(
-            (enrollment: Enrollment) =>
-              enrollment.user === currentUser._id &&
-              enrollment.course === course._id
-          );
-        }
-      })
-      .map((course) => {
-        const isEnrolled = enrollments.some(
-          (enrollment: Enrollment) =>
-            enrollment.user === currentUser._id &&
-            enrollment.course === course._id
-        );
+          {courses
+            .filter((course) => {
+              if (currentUser.role === "STUDENT") {
+                // 学生：显示所有课程或仅显示已选课程
+                if (showAllCourses) {
+                  return true; // 显示所有课程
+                } else {
+                  // 仅显示学生已选的课程
+                  return enrollments.some(
+                    (enrollment: Enrollment) =>
+                      enrollment.user === currentUser._id &&
+                      enrollment.course === course._id
+                  );
+                }
+              } else if (currentUser.role === "FACULTY") {
+                // 教师：显示自己教授的课程
+                return course.facultyId === currentUser._id;
+              } else {
+                // 其他角色：根据需要调整
+                return false;
+              }
+            })
+            .map((course) => {
+              const isEnrolled = enrollments.some(
+                (enrollment: Enrollment) =>
+                  enrollment.user === currentUser._id &&
+                  enrollment.course === course._id
+              );
               return (
                 <div
                   className="wd-dashboard-course col"
@@ -175,7 +227,7 @@ export default function Dashboard({
 
                         <button className="btn btn-primary"> Go </button>
 
-                        {/* Display "Enroll" or "Unenroll" button based on enrollment status */}
+                        {/* 根据用户角色和状态显示按钮 */}
                         {currentUser && currentUser.role === "STUDENT" && (
                           <>
                             {isEnrolled ? (
@@ -204,7 +256,7 @@ export default function Dashboard({
 
                         {currentUser && currentUser.role === "FACULTY" && (
                           <>
-                            {/* Delete button */}
+                            {/* 删除按钮 */}
                             <button
                               onClick={(event) => {
                                 event.preventDefault();
@@ -216,7 +268,7 @@ export default function Dashboard({
                               Delete
                             </button>
 
-                            {/* Edit button */}
+                            {/* 编辑按钮 */}
                             <button
                               id="wd-edit-course-click"
                               onClick={(event) => {

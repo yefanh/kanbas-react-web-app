@@ -43,13 +43,7 @@ export default function Kanbas() {
             <Route path="/Account/*" element={<Account />} />  {/* load account component */}
 
             <Route path="Dashboard" element={<ProtectedRoute>
-              <Dashboard
-                  courses={courses}
-                  course={course}
-                  setCourse={setCourse}
-                  addNewCourse={addNewCourse}
-                  deleteCourse={deleteCourse}
-                  updateCourse={updateCourse}/>
+              <Dashboard/>
             </ProtectedRoute> }/>
 
             {/* Add Courses route, ":cid" is a dynamic parameter that represents the course 
