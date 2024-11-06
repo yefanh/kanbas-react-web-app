@@ -1,6 +1,6 @@
 // src/Kanbas/Courses/Assignments/index.tsx
 import { useParams } from "react-router";  // import the useParams hook
-import * as db from "../../Database";  // import the database
+import { useSelector } from "react-redux"; // 引入 useSelector
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButton from "./AssignmentControlButtons";
 import { BsGripVertical } from "react-icons/bs";
@@ -10,9 +10,13 @@ import AssignmentItem from "./AssignmentItem";
 export default function Assignments() {
   // use the useParams hook to get the course id
   const { cid } = useParams();
+  const assignments = useSelector(
+    (state: any) => state.assignmentsReducer.assignments
+  ); // 从 Redux Store 获取作业列表
+
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const role = currentUser ? currentUser.role : null;
   
-  // get the assignments from the database
-  const assignments = db.assignments;
 
   // filter the assignments based on the course id
   const filteredAssignments = assignments.filter((assignment: any) => assignment.course === cid);
@@ -28,7 +32,7 @@ export default function Assignments() {
             <BsGripVertical className="me-2 fs-3" />
             <MdArrowDropDown className="me-2 fs-3" />
             ASSIGNMENTS
-            <AssignmentsControlButton />
+            {role === "FACULTY" && <AssignmentsControlButton />}
           </div>
 
           <ul id="wd-assignments-list" className="list-group rounded-0">
@@ -36,6 +40,7 @@ export default function Assignments() {
             {filteredAssignments.map((assignment: any) => (
               <AssignmentItem
                 key={assignment._id}
+                id={assignment._id} 
                 title={assignment.title}
                 modules="Multiple Modules"
                 availability="To be defined"  // 这里可以根据需要填充具体的时间信息

@@ -16,23 +16,25 @@ const assignmentsSlice = createSlice({
     addAssignment: (state, { payload: assignment }) => {
       const newAssignment: any = {
         _id: new Date().getTime().toString(),
+        course: assignment.course, // 添加 course 属性
         ...assignment,
       };
       console.log("addAssignment: newAssignment =", newAssignment);
       state.assignments = [...state.assignments, newAssignment];
     },
     // delete assignment
-    deleteAssignment: (state, { payload: assignmentId }) => {
+    deleteAssignment: (state, action) => {
+      const assignmentId = action.payload;
       state.assignments = state.assignments.filter(
-        (a: any) => a._id !== assignmentId
+        (assignment) => assignment._id !== assignmentId
       );
     },
     // update assignment
-    updateAssignment: (state, { payload: assignment }) => {
+    updateAssignment: (state, { payload: updatedAssignment }) => {
       state.assignments = state.assignments.map((a: any) =>
-        a._id === assignment._id ? assignment : a
+        a._id === updatedAssignment._id ? updatedAssignment : a
       );
-    },
+    }
   },
 });
 

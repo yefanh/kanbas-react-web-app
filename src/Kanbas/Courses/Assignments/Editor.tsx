@@ -1,21 +1,22 @@
-// src/Kanbas/Courses/Assignments/Editor.tsx
+//src/Kanbas/Courses/Assignments/Editor.tsx
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAssignment, updateAssignment } from './reducer'; // 引入 updateAssignment action
+import { addAssignment, updateAssignment } from './reducer';
 
 export default function AssignmentEditor() {
-  const { courseId, aid } = useParams();
+  const { cid: courseId, aid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // 打印 courseId 和 aid，确保它们在 URL 中传递正确
-  console.log("AssignmentEditor: courseId =", courseId, "aid =", aid);
+  // 获取 currentUser 和 role
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const role = currentUser ? currentUser.role : null;
 
+  // 调用所有 Hooks，不要放在条件语句之后
   const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
   const existingAssignment = assignments.find((a: any) => a._id === aid);
 
-  // 使用现有数据初始化表单字段（如果 aid 存在，即编辑模式）
   const [title, setTitle] = useState(existingAssignment ? existingAssignment.title : '');
   const [description, setDescription] = useState(existingAssignment ? existingAssignment.description : '');
   const [points, setPoints] = useState(existingAssignment ? existingAssignment.points : 100);
@@ -23,7 +24,6 @@ export default function AssignmentEditor() {
   const [availableFrom, setAvailableFrom] = useState(existingAssignment ? existingAssignment.availableFrom : '');
   const [availableUntil, setAvailableUntil] = useState(existingAssignment ? existingAssignment.availableUntil : '');
 
-  // 当组件加载时，确保从 Redux Store 加载最新的数据
   useEffect(() => {
     if (existingAssignment) {
       setTitle(existingAssignment.title);
@@ -35,33 +35,39 @@ export default function AssignmentEditor() {
     }
   }, [existingAssignment]);
 
-    // 保存按钮点击事件处理
-    const handleSave = () => {
-      if (existingAssignment) {
-        // 编辑模式，更新现有作业
-        dispatch(updateAssignment({ 
-          _id: existingAssignment._id,
-          title,
-          description,
-          points,
-          dueDate,
-          availableFrom,
-          availableUntil,
-        }));
-      } else {
-        // 创建模式，添加新作业
-        dispatch(addAssignment({ 
-          title,
-          description,
-          points,
-          dueDate,
-          availableFrom,
-          availableUntil,
-          course: courseId
-        }));
-      }
-      navigate(`/Kanbas/Courses/${courseId}/Assignments`); // 保存后导航回 Assignments 页面
-    };
+  // 在 Hooks 调用之后，再进行条件渲染
+  if (role !== "FACULTY") {
+    return <Navigate to={`/Kanbas/Courses/${courseId}/Assignments`} />;
+  }
+
+  // 保存按钮点击事件处理
+  const handleSave = () => {
+    if (existingAssignment) {
+      // 编辑模式，更新现有作业
+      dispatch(updateAssignment({ 
+        _id: existingAssignment._id,
+        course: courseId,
+        title,
+        description,
+        points,
+        dueDate,
+        availableFrom,
+        availableUntil,
+      }));
+    } else {
+      // 创建模式，添加新作业
+      dispatch(addAssignment({ 
+        title,
+        description,
+        points,
+        dueDate,
+        availableFrom,
+        availableUntil,
+        course: courseId
+      }));
+    }
+    navigate(`/Kanbas/Courses/${courseId}/Assignments`);
+  };
 
   return (
     <div id="wd-assignments-editor" className="container mt-4">

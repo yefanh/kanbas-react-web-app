@@ -1,10 +1,14 @@
 // src/Kanbas/Courses/Assignments/AssignmentsControls.tsx
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom"; 
+import { useSelector } from "react-redux";
 
 export default function AssignmentsControls() {
   const { cid: courseId } = useParams();
-  console.log("AssignmentsControls: courseId =", courseId);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const role = currentUser ? currentUser.role : null;
+
+  // console.log("AssignmentsControls: courseId =", courseId);
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
       {/* Search Input */}
@@ -18,16 +22,24 @@ export default function AssignmentsControls() {
         />
       </div>
       {/* Group and Assignment Buttons */}
-      <div>
-        <button id="wd-add-assignment-group" className="btn btn-secondary me-2">
-          <FaPlus className="me-1" /> Group
-        </button>
+      {role === "FACULTY" && (
+        <div>
+          <button
+            id="wd-add-assignment-group"
+            className="btn btn-secondary me-2"
+          >
+            <FaPlus className="me-1" /> Group
+          </button>
 
-        <Link to={`/Kanbas/Courses/${courseId}/Assignments/Editor`} className="btn btn-danger">
-          <FaPlus className="me-1" /> Assignment
-        </Link>
+          <Link
+            to={`/Kanbas/Courses/${courseId}/Assignments/Editor`}
+            className="btn btn-danger"
+          >
+            <FaPlus className="me-1" /> Assignment
+          </Link>
+        </div>
+      )}
 
-      </div>
     </div>
   );
 }
