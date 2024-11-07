@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as db from "./Database";
 import { addEnrollment, removeEnrollment } from "./Enrollments/reducer";
 
-// 定义 Course 接口
+// define Course interface
 interface Course {
   _id: string;
   name: string;
@@ -15,12 +15,12 @@ interface Course {
   department: string;
   credits: number;
   description: string;
-  facultyId?: string; // 新增的属性
+  facultyId?: string; //add facultyId
 }
 
-// 定义 Enrollment 接口
+// define Enrollment interface
 interface Enrollment {
-  _id?: string; // _id 可选
+  _id?: string; // _id is optional
   user: string;
   course: string;
 }
@@ -28,7 +28,7 @@ interface Enrollment {
 export default function Dashboard() {
   const dispatch = useDispatch();
 
-  // 使用 useState 管理 courses 和 course 状态
+  // useState hooks to manage courses and course state
   const [courses, setCourses] = useState<Course[]>(db.courses);
   const [course, setCourse] = useState<Course>({
     _id: "",
@@ -39,7 +39,7 @@ export default function Dashboard() {
     department: "",
     credits: 0,
     description: "",
-    facultyId: "", // 初始化 facultyId
+    facultyId: "", // initialize facultyId
   });
 
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -47,15 +47,15 @@ export default function Dashboard() {
 
   const [showAllCourses, setShowAllCourses] = useState(false);
 
-  // 定义添加新课程的函数
+  // define addNewCourse function
   const addNewCourse = () => {
     const newCourse = {
       ...course,
       _id: new Date().getTime().toString(),
-      facultyId: currentUser._id, // 设置 facultyId 为当前用户 ID
+      facultyId: currentUser._id, // set facultyId as currentUser._id
     };
     setCourses([...courses, newCourse]);
-    // 清空课程表单
+    // clear course form
     setCourse({
       _id: "",
       name: "",
@@ -65,21 +65,21 @@ export default function Dashboard() {
       department: "",
       credits: 0,
       description: "",
-      facultyId: currentUser._id, // 重置 facultyId
+      facultyId: currentUser._id, // reset facultyId
     });
   };
 
-  // 定义删除课程的函数
+  // define deleteCourse function
   const deleteCourse = (courseId: string) => {
     setCourses(courses.filter((course) => course._id !== courseId));
   };
 
-  // 定义更新课程的函数
+  // define updateCourse function
   const updateCourse = () => {
     setCourses(
       courses.map((c) => (c._id === course._id ? course : c))
     );
-    // 清空课程表单
+    // clear course form
     setCourse({
       _id: "",
       name: "",
@@ -93,7 +93,7 @@ export default function Dashboard() {
     });
   };
 
-  // 定义选课和退课的函数
+  // define handleEnroll function
   function handleEnroll(courseId: string) {
     const newEnrollment: Enrollment = { user: currentUser._id, course: courseId };
     dispatch(addEnrollment(newEnrollment));
@@ -107,7 +107,7 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
 
-      {/* 学生用户的“Enrollments”按钮 */}
+      {/* student user's enrollments button */}
       {currentUser && currentUser.role === "STUDENT" && (
         <button
           className="btn btn-primary float-end"
@@ -117,7 +117,7 @@ export default function Dashboard() {
         </button>
       )}
 
-      {/* 教师用户的新增课程表单 */}
+      {/* faculty user's new course form */}
       {currentUser && currentUser.role === "FACULTY" && (
         <>
           <h5>
@@ -140,7 +140,7 @@ export default function Dashboard() {
           </h5>
           <br />
 
-          {/* 课程表单 */}
+          {/* clear course form */}
           <input
             value={course.name}
             className="form-control mb-2"
@@ -173,11 +173,11 @@ export default function Dashboard() {
           {courses
             .filter((course) => {
               if (currentUser.role === "STUDENT") {
-                // 学生：显示所有课程或仅显示已选课程
+                // student: show all courses or only enrolled courses
                 if (showAllCourses) {
-                  return true; // 显示所有课程
+                  return true; // show all courses
                 } else {
-                  // 仅显示学生已选的课程
+                  // just show enrolled courses
                   return enrollments.some(
                     (enrollment: Enrollment) =>
                       enrollment.user === currentUser._id &&
@@ -185,10 +185,10 @@ export default function Dashboard() {
                   );
                 }
               } else if (currentUser.role === "FACULTY") {
-                // 教师：显示自己教授的课程
+                // faculty: show only faculty's courses
                 return course.facultyId === currentUser._id;
               } else {
-                // 其他角色：根据需要调整
+                // other roles: show all courses
                 return false;
               }
             })
@@ -227,7 +227,7 @@ export default function Dashboard() {
 
                         <button className="btn btn-primary"> Go </button>
 
-                        {/* 根据用户角色和状态显示按钮 */}
+                        {/* include enroll/unenroll buttons */}
                         {currentUser && currentUser.role === "STUDENT" && (
                           <>
                             {isEnrolled ? (
@@ -256,7 +256,7 @@ export default function Dashboard() {
 
                         {currentUser && currentUser.role === "FACULTY" && (
                           <>
-                            {/* 删除按钮 */}
+                            {/* delete button */}
                             <button
                               onClick={(event) => {
                                 event.preventDefault();
@@ -268,7 +268,7 @@ export default function Dashboard() {
                               Delete
                             </button>
 
-                            {/* 编辑按钮 */}
+                            {/* edit button */}
                             <button
                               id="wd-edit-course-click"
                               onClick={(event) => {
