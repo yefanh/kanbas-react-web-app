@@ -62,7 +62,7 @@ export default function Dashboard(
           className="btn btn-primary float-end"
           onClick={toggleEnrollments}
         >
-          {showAllCourses ? "Show My Courses" : "Show All Courses"}
+          {showAllCourses ? "My Courses" : "Enrollment"}
         </button>
       )}
       <br /><br />
