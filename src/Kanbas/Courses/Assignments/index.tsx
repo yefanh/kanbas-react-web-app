@@ -12,8 +12,7 @@ export default function Assignments() {
   const { cid } = useParams();
   const assignments = useSelector(
     (state: any) => state.assignmentsReducer.assignments
-  ); // 从 Redux Store 获取作业列表
-
+  ); // get the assignments from the store
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser ? currentUser.role : null;
   
@@ -23,7 +22,6 @@ export default function Assignments() {
 
   return (
     <div className="container">
-      qwe
       {/* Assignments Controls bar */}
       <AssignmentsControls /><br />
 
