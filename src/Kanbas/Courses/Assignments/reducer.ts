@@ -16,7 +16,7 @@ const assignmentsSlice = createSlice({
     addAssignment: (state, { payload: assignment }) => {
       const newAssignment: any = {
         _id: new Date().getTime().toString(),
-        course: assignment.course, // 添加 course 属性
+        course: assignment.course, // add course id
         ...assignment,
       };
       console.log("addAssignment: newAssignment =", newAssignment);

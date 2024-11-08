@@ -109,4 +109,18 @@
   "section": "S101",
   "lastActivity": "2020-11-11",
   "totalActivity": "21:32:43"
+},
+{
+  "_id": "777",
+  "username": "eee",
+  "password": "eee",
+  "firstName": "Legolas",
+  "lastName": "Greenleaf",
+  "email": "legolas@mirkwood.com",
+  "dob": "2879-07-15",
+  "role": "STUDENT",
+  "loginId": "001234569S",
+  "section": "S101",
+  "lastActivity": "2020-11-11",
+  "totalActivity": "21:32:43"
 }]

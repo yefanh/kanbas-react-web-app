@@ -9,11 +9,11 @@ export default function AssignmentEditor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // 获取 currentUser 和 role
+  // get the current user
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser ? currentUser.role : null;
 
-  // 调用所有 Hooks，不要放在条件语句之后
+  // call the useSelector hook to get the assignments
   const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
   const existingAssignment = assignments.find((a: any) => a._id === aid);
 
@@ -55,7 +55,7 @@ export default function AssignmentEditor() {
         availableUntil,
       }));
     } else {
-      // 创建模式，添加新作业
+      // create a new assignment
       dispatch(addAssignment({ 
         title,
         description,
@@ -73,7 +73,7 @@ export default function AssignmentEditor() {
     <div id="wd-assignments-editor" className="container mt-4">
       {/* Assignment Name */}
       <label htmlFor="wd-name" className="form-label">
-        <h5>{title || "Assignment name"}</h5> {/* 动态显示标题 */}
+        <h5>{title || "Assignment name"}</h5> 
       </label>
       <input
         id="wd-name"

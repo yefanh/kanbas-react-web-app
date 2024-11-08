@@ -2,13 +2,13 @@
 import { BsGripVertical } from "react-icons/bs";
 import SingleAssignmentButton from "./SingleAssignmentButton";
 import { LuFileEdit } from "react-icons/lu";
-import { FaTrash } from "react-icons/fa"; // 引入删除图标
-import { useDispatch, useSelector } from "react-redux"; // 引入 useDispatch
-import { deleteAssignment } from "./reducer"; // 引入删除作业的 action
-import { useNavigate } from "react-router-dom"; // 引入 useNavigate 以便在删除后导航
+import { FaTrash } from "react-icons/fa"; 
+import { useDispatch, useSelector } from "react-redux"; 
+import { deleteAssignment } from "./reducer"; 
+import { useNavigate } from "react-router-dom"; 
 
 export default function AssignmentItem({
-  id, // 添加 id 属性
+  id, // add id property
   title,
   modules,
   availability,
@@ -16,7 +16,7 @@ export default function AssignmentItem({
   points,
   link,
 }: {
-  id: string; // 添加 id 属性
+  id: string; // add id property
   title: string;
   modules: string;
   availability: string;

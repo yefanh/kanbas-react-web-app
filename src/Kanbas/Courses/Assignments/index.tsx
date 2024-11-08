@@ -23,6 +23,7 @@ export default function Assignments() {
 
   return (
     <div className="container">
+      qwe
       {/* Assignments Controls bar */}
       <AssignmentsControls /><br />
 
@@ -43,9 +44,9 @@ export default function Assignments() {
                 id={assignment._id} 
                 title={assignment.title}
                 modules="Multiple Modules"
-                availability="To be defined"  // 这里可以根据需要填充具体的时间信息
-                dueDate="To be defined"        // 这里可以根据需要填充具体的时间信息
-                points="100"                   // 假设每个作业都是 100 分，可以根据需要调整
+                availability="To be defined"  // here you can fill in the specific time information as needed
+                dueDate="To be defined"        // here you can fill in the specific time information as needed
+                points="100"                   // assign the default value of 100 points
                 link={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
               />
             ))}

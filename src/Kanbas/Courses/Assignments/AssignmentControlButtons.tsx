@@ -10,7 +10,7 @@ export default function AssignmentsControlButton() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser ? currentUser.role : null;
 
-  // 如果用户不是 FACULTY，不渲染按钮
+  // if the user is not a faculty, return null
   if (role !== "FACULTY") {
     return null;
   }

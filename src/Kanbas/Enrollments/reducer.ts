@@ -1,42 +1,32 @@
 // src/Kanbas/Enrollments/reducer.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { enrollments } from "../Database";
 
-// define Enrollment interface
-interface Enrollment {
-  user: string;
-  course: string;
-}
-
-interface EnrollmentsState {
-  enrollments: Enrollment[];
-}
-
-// initialize state, get enrollments from localStorage
-const initialState: EnrollmentsState = {
-  enrollments: JSON.parse(localStorage.getItem("enrollments") || "[]"),
+const initialState = {
+  enrollments: enrollments, // from Database/enrollments.json
 };
 
-const enrollmentsSlice = createSlice({
-  name: "enrollments",
+const enrollmentSlice = createSlice({
+  name: "enrollment",
   initialState,
   reducers: {
-    // add a new enrollment
-    addEnrollment: (state, action: PayloadAction<Enrollment>) => {
-      const newEnrollment = action.payload;
+    enrollCourse: (state, { payload: { userId, courseId } }) => {
+      // create a new enrollment object
+      const newEnrollment = {
+        _id: new Date().getTime().toString(), // use timestamp as the id
+        user: userId,
+        course: courseId,
+      };
       state.enrollments.push(newEnrollment);
-      localStorage.setItem("enrollments", JSON.stringify(state.enrollments)); // 更新 localStorage
     },
-    // delete an enrollment
-    removeEnrollment: (state, action: PayloadAction<string>) => {
-      const courseId = action.payload;
+    unenrollCourse: (state, { payload: { userId, courseId } }) => {
+      // delete the enrollment with the given user and course id
       state.enrollments = state.enrollments.filter(
-        (enrollment: Enrollment) => enrollment.course !== courseId
+        (enrollment: any) => !(enrollment.user === userId && enrollment.course === courseId) // include all enrollments except the one to be deleted
       );
-      localStorage.setItem("enrollments", JSON.stringify(state.enrollments)); // 更新 localStorage
     },
   },
 });
 
-//export actions and reducer
-export const { addEnrollment, removeEnrollment } = enrollmentsSlice.actions;
-export default enrollmentsSlice.reducer;
+export const { enrollCourse, unenrollCourse } = enrollmentSlice.actions;
+export default enrollmentSlice.reducer;
