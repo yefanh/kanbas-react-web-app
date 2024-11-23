@@ -1,4 +1,4 @@
-//src/Kanbas/Courses/index.tsx
+//kanbas-react-web-app/src/Kanbas/Courses/index.tsx
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";

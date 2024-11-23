@@ -5,13 +5,32 @@ import Dashboard from "./Dashboard";
 import KanbasNavigation from "./Navigation";
 import Courses from "./Courses";
 import "./styles.css";
-import * as db from "./Database";
+// import * as db from "./Database";
 import { useState } from "react";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
+import * as userClient from "./Account/client";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import * as courseClient from "./Courses/client";
 
 export default function Kanbas() {
-  const [courses, setCourses] = useState<any[]>(db.courses);
+  // const [courses, setCourses] = useState<any[]>(db.courses);
+  const [courses, setCourses] = useState<any[]>([]);
+
+  const { currentUser } = useSelector((state: any) => state.accountReducer); 
+
+  const fetchCourses = async () => {
+    try {
+      const courses = await userClient.findMyCourses();
+      setCourses(courses);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, [currentUser]);
 
   const [course, setCourse] = useState<any>({
     _id: "0", name: "New Course", number: "New Number",
@@ -19,17 +38,34 @@ export default function Kanbas() {
     image: "/images/reactjs.jpg", description: "New Description"
   });
 
-  const addNewCourse = () => {
-    const newCourse = { ...course,
-                        _id: new Date().getTime().toString() };
+  const addNewCourse = async () => {
+    const newCourse = await userClient.createCourse(course);
+    // const newCourse = { ...course,
+    //                     _id: new Date().getTime().toString() };
     setCourses([...courses, newCourse ]);
   };
 
-  const deleteCourse = (courseId: string) => {
-    setCourses(courses.filter((course) => course._id !== courseId));
+  const deleteCourse = async (courseId: string) => {
+    try {
+      const status = await courseClient.deleteCourse(courseId);
+      // verify that the status code is 204
+      if (status === 204) {
+        // after deleting the course, update the state
+        setCourses(courses.filter((course) => course._id !== courseId));
+      } else {
+        // if the status code is not 204, log an error and alert the user
+        console.error("Failed to delete course on server. Status:", status);
+        alert("Failed to delete course. Please try again.");
+      }
+    } catch (error) {
+      // catch any errors that occur during the deletion process
+      console.error("Error occurred while deleting course:", error);
+      alert("An error occurred while deleting the course. Please try again.");
+    }
   };
-
-  const updateCourse = () => {
+  
+  const updateCourse = async () => {
+    await courseClient.updateCourse(course);
     setCourses(
       courses.map((c) => {
         if (c._id === course._id) {

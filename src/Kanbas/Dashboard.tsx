@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { enrollCourse, unenrollCourse } from "./Enrollments/reducer";
 
-
 // define the Course interface
 interface Course {
   _id: string;
