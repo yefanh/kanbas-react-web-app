@@ -1,11 +1,13 @@
-//src/Kanbas/Courses/Assignments/Editor.tsx
+//kanbas-react-web-app/src/Kanbas/Courses/Assignments/Editor.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAssignment, updateAssignment } from './reducer';
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
-  const { cid: courseId, aid } = useParams();
+  const { cid, aid } = useParams<{ cid: string; aid?: string }>();
+  const courseId = cid!;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,10 +43,10 @@ export default function AssignmentEditor() {
   // }
 
   // handle the save button click
-  const handleSave = () => {
+  const handleSave = async () => {
+    //update the existing assignment
     if (existingAssignment) {
-      // update the existing assignment
-      dispatch(updateAssignment({ 
+      const updatedAssignment = {
         _id: existingAssignment._id,
         course: courseId,
         title,
@@ -53,18 +55,22 @@ export default function AssignmentEditor() {
         dueDate,
         availableFrom,
         availableUntil,
-      }));
+      };
+    await assignmentsClient.updateAssignment(updatedAssignment);
+    dispatch(updateAssignment(updatedAssignment));
     } else {
       // create a new assignment
-      dispatch(addAssignment({ 
+      const newAssignment = {
         title,
         description,
         points,
         dueDate,
         availableFrom,
         availableUntil,
-        course: courseId
-      }));
+        course: courseId,
+      };
+      const createdAssignment = await assignmentsClient.createAssignmentForCourse(courseId, newAssignment);
+      dispatch(addAssignment(createdAssignment));
     }
     navigate(`/Kanbas/Courses/${courseId}/Assignments`);
   };

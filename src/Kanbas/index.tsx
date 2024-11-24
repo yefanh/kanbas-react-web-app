@@ -6,11 +6,10 @@ import KanbasNavigation from "./Navigation";
 import Courses from "./Courses";
 import "./styles.css";
 // import * as db from "./Database";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
 import * as userClient from "./Account/client";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import * as courseClient from "./Courses/client";
 
@@ -22,7 +21,7 @@ export default function Kanbas() {
 
   const fetchCourses = async () => {
     try {
-      const courses = await userClient.findMyCourses();
+      const courses = await courseClient.fetchAllCourses();
       setCourses(courses);
     } catch (error) {
       console.error(error);

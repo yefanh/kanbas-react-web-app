@@ -1,8 +1,9 @@
-//src/Kanbas/Dashboard.tsx
+//kanbas-react-web-app/src/Kanbas/Dashboard.tsx
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { enrollCourse, unenrollCourse } from "./Enrollments/reducer";
+// import { enrollCourse, unenrollCourse } from "./Enrollments/reducer";
+import * as enrollmentsClient from "./Enrollments/client";
 
 // define the Course interface
 interface Course {
@@ -25,32 +26,63 @@ export default function Dashboard(
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   // const { enrollments } = db;
-  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+  // const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+  const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const fetchEnrollments = async () => {
+      if (currentUser && currentUser.role === "STUDENT") {
+        const enrollmentsData = await enrollmentsClient.fetchMyCourses();
+        setEnrolledCourses(enrollmentsData);
+      }
+    };
+    fetchEnrollments();
+  }, [currentUser]);
   
   const [showAllCourses, setShowAllCourses] = useState(false);
 
-    // change the state of showAllCourses
-    const toggleEnrollments = () => {
-      setShowAllCourses(!showAllCourses);
-    };
+  // change the state of showAllCourses
+  const toggleEnrollments = () => {
+    setShowAllCourses(!showAllCourses);
+  };
+  // const toggleEnrollments = async () => {
+  //   if (!showAllCourses) {
+  //     // 如果切换到 "My Courses"，刷新已注册课程
+  //     const enrollmentsData = await enrollmentsClient.fetchMyCourses();
+  //     setEnrolledCourses(enrollmentsData);
+  //   }
+  //   setShowAllCourses(!showAllCourses);
+  // };
   
-    // filter courses based on the showAllCourses state
-    const filteredCourses = showAllCourses
-    ? courses
-    : courses.filter((course) =>
-        enrollments.some((enrollment: { user: string; course: string }) =>
-          enrollment.user === currentUser._id && enrollment.course === course._id
-        )
-      ); 
 
-    const handleEnroll = (courseId: string) => {
-      dispatch(enrollCourse({ userId: currentUser._id, courseId }));
-    };
-  
-    const handleUnenroll = (courseId: string) => {
-      dispatch(unenrollCourse({ userId: currentUser._id, courseId }));
+  // filter courses based on the showAllCourses state
+  const filteredCourses = showAllCourses
+  ? courses //when showAllCourses is true, show all courses
+  : courses.filter((course) =>  //when showAllCourses is false, show only enrolled courses
+    enrolledCourses.some((enrolledCourse: Course) => enrolledCourse._id === course._id)
+    );
+
+  // const handleEnroll = (courseId: string) => {
+  //   dispatch(enrollCourse({ userId: currentUser._id, courseId }));
+  // };
+
+  // const handleUnenroll = (courseId: string) => {
+  //   dispatch(unenrollCourse({ userId: currentUser._id, courseId }));
+  // };
+
+  const handleEnroll = async (courseId: string) => {
+    await enrollmentsClient.enrollInCourse(courseId);
+    //update the enrolled courses
+    const enrollmentsData = await enrollmentsClient.fetchMyCourses();
+    setEnrolledCourses(enrollmentsData);
     };
 
+  const handleUnenroll = async (courseId: string) => {
+    await enrollmentsClient.unenrollFromCourse(courseId);
+    // update the enrolled courses
+    const enrollmentsData = await enrollmentsClient.fetchMyCourses();
+    setEnrolledCourses(enrollmentsData);
+  };
 
   return (
     <div id="wd-dashboard">
@@ -95,10 +127,7 @@ export default function Dashboard(
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
         {filteredCourses.map((course: Course) => { 
-            const isEnrolled = enrollments.some((enrollment: { user: string; course: string }) =>
-              enrollment.user === currentUser._id && enrollment.course === course._id
-            );
-
+            const isEnrolled = enrolledCourses.some((enrolledCourse: Course) => enrolledCourse._id === course._id);
             return (
               <div key={course._id} className="wd-dashboard-course col" style={{ width: "300px" }}>
                 <div className="card rounded-3 overflow-hidden">

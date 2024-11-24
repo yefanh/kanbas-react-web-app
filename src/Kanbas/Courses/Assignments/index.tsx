@@ -1,15 +1,20 @@
-// src/Kanbas/Courses/Assignments/index.tsx
+//kanbas-react-web-app/src/Kanbas/Courses/Assignments/index.tsx
 import { useParams } from "react-router";  // import the useParams hook
-import { useSelector } from "react-redux"; // 引入 useSelector
+import { useSelector,useDispatch } from "react-redux";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButton from "./AssignmentControlButtons";
 import { BsGripVertical } from "react-icons/bs";
 import { MdArrowDropDown } from "react-icons/md";
 import AssignmentItem from "./AssignmentItem";
+import { useEffect } from "react";
+import * as assignmentsClient from "./client";
+import { setAssignments, deleteAssignment } from "./reducer";
 
 export default function Assignments() {
   // use the useParams hook to get the course id
   const { cid } = useParams();
+  const dispatch = useDispatch();
+
   const assignments = useSelector(
     (state: any) => state.assignmentsReducer.assignments
   ); // get the assignments from the store
@@ -17,8 +22,22 @@ export default function Assignments() {
   const role = currentUser ? currentUser.role : null;
   
 
-  // filter the assignments based on the course id
-  const filteredAssignments = assignments.filter((assignment: any) => assignment.course === cid);
+  // get the assignments for the course
+  const fetchAssignments = async () => {
+    const assignments = await assignmentsClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
+
+  //delete assignment
+  const removeAssignment = async (assignmentId: string) => {
+    console.log("Deleting assignment with ID:", assignmentId); //debugging!!
+    await assignmentsClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
 
   return (
     <div className="container">
@@ -36,7 +55,7 @@ export default function Assignments() {
 
           <ul id="wd-assignments-list" className="list-group rounded-0">
             {/* dynamically render the assignments */}
-            {filteredAssignments.map((assignment: any) => (
+            {assignments.map((assignment: any) => (
               <AssignmentItem
                 key={assignment._id}
                 id={assignment._id} 
@@ -44,8 +63,9 @@ export default function Assignments() {
                 modules="Multiple Modules"
                 availability="To be defined"  // here you can fill in the specific time information as needed
                 dueDate="To be defined"        // here you can fill in the specific time information as needed
-                points="100"                   // assign the default value of 100 points
+                points={assignment.points || "100"}     
                 link={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+                deleteAssignment={removeAssignment}
               />
             ))}
           </ul>

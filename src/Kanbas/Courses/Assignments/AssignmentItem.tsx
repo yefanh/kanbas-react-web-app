@@ -1,4 +1,4 @@
-// src/Kanbas/Courses/Assignments/AssignmentItem.tsx
+//kanbas-react-web-app/src/Kanbas/Courses/Assignments/AssignmentItem.tsx
 import { BsGripVertical } from "react-icons/bs";
 import SingleAssignmentButton from "./SingleAssignmentButton";
 import { LuFileEdit } from "react-icons/lu";
@@ -6,32 +6,38 @@ import { FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux"; 
 import { deleteAssignment } from "./reducer"; 
 import { useNavigate } from "react-router-dom"; 
+import React from 'react';
 
-export default function AssignmentItem({
-  id, // add id property
-  title,
-  modules,
-  availability,
-  dueDate,
-  points,
-  link,
-}: {
-  id: string; // add id property
+interface AssignmentItemProps {
+  id: string;
   title: string;
   modules: string;
   availability: string;
   dueDate: string;
   points: string;
   link: string;
-}) {
-  const dispatch = useDispatch();
+  deleteAssignment?: (assignmentId: string) => void; // add deleteAssignment property
+}
+
+const AssignmentItem: React.FC<AssignmentItemProps> = ({
+  id,
+  title,
+  modules,
+  availability,
+  dueDate,
+  points,
+  link,
+  deleteAssignment,
+}) => {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser ? currentUser.role : null;
 
   const handleDelete = () => {
-    if (window.confirm("are you sure you want to remove the assignment")) {
-      dispatch(deleteAssignment(id));
+    if (window.confirm("Are you sure you want to remove the assignment?")) {
+      if (deleteAssignment) {
+        deleteAssignment(id);
+      }
     }
   };
 
@@ -68,3 +74,5 @@ export default function AssignmentItem({
     </li>
   );
 }
+
+export default AssignmentItem;

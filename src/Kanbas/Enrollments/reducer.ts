@@ -1,4 +1,4 @@
-// src/Kanbas/Enrollments/reducer.ts
+//kanbas-react-web-app/src/Kanbas/Enrollments/reducer.ts
 import { createSlice } from "@reduxjs/toolkit";
 import { enrollments } from "../Database";
 
