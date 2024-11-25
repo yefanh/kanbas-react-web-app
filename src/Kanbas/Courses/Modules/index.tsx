@@ -48,7 +48,7 @@ export default function Modules() {
   // const filteredModules = modules.filter((module: any) => module.course === cid);
   
   return (
-    <div className="wd-modules">
+    <div className="wd-modules container-fluid">
       
       {currentUser && currentUser.role === "FACULTY" && (
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={createModuleForCourse} />

@@ -86,7 +86,7 @@ export default function Kanbas() {
   const CourseRoute = () => {
     const { cid } = useParams(); // Extract `cid` parameter
     return (
-      <ProtectedRoute courseId={cid}>
+      <ProtectedRoute courseId={cid} mycourses={mycourses}>
         <Courses courses={mycourses} />
       </ProtectedRoute>
     );

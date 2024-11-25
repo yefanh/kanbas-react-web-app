@@ -23,7 +23,8 @@ export default function Courses({ courses }: { courses: any[]; }) { // don't loa
         <div className="d-none d-md-block">
           <CoursesNavigation />
         </div>
-      <div></div>
+        {/* make the main content area fill the remaining space!!! */}
+        <div className="flex-fill">   
             <Routes>
               <Route path="/" element={<Navigate to="Home" />} />
               <Route path="Home" element={<Home />} />
@@ -34,6 +35,8 @@ export default function Courses({ courses }: { courses: any[]; }) { // don't loa
               <Route path="Assignments/:aid" element={<AssignmentEditor />} />
               <Route path="People" element={<PeopleTable />} />
             </Routes>
-        </div></div>
+        </div>
+      </div>
+    </div>
   
 );}

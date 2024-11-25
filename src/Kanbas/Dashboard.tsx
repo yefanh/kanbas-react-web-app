@@ -56,16 +56,6 @@ export default function Dashboard(
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
 
-      {currentUser && currentUser.role === "STUDENT" && (
-        <button 
-          className="btn btn-primary float-end"
-          onClick={toggleEnrollments}
-        >
-          {showAllCourses ? "My Courses" : "Enrollment"}
-        </button>
-      )}
-      <br /><br />
-
       {currentUser && currentUser.role === "FACULTY" && (
         <>
           <h5>New Course
@@ -91,7 +81,22 @@ export default function Dashboard(
         </>
       )}
 
-      <h2 id="wd-dashboard-published">Published Courses ({mycourses.length})</h2> <hr />
+      <div className="d-flex justify-content-between align-items-center">
+        <h2 id="wd-dashboard-published" className="mb-0">
+          Published Courses ({allCourses.length})
+        </h2>
+
+        {currentUser && currentUser.role === "STUDENT" && (
+          <button 
+            className="btn btn-primary"
+            onClick={toggleEnrollments}
+          >
+            {showAllCourses ? "My Courses" : "Enrollment"}
+          </button>
+        )}
+
+      </div>
+      <hr />
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
         {filteredCourses.map((course: Course) => { 
