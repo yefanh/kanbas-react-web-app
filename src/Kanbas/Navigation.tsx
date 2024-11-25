@@ -20,7 +20,7 @@ export default function KanbasNavigation() {
   return (
     <div
       id="wd-kanbas-navigation"
-      style={{ width: 120 }}
+      style={{ width: 100 }}
       className="list-group rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2"
     >
       <a
@@ -29,7 +29,7 @@ export default function KanbasNavigation() {
         href="https://www.northeastern.edu/"
         className="list-group-item bg-black border-0 text-center"
       >
-        <img src="/images/NEU.png" width="90px" />
+        <img src="/images/NEU.png" width="80px" />
       </a>
 
       <Link to="/Kanbas/Account" className={`list-group-item text-center border-0 bg-black
