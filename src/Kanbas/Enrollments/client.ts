@@ -16,7 +16,7 @@ export const unenrollFromCourse = async (courseId: string) => {
   await axiosWithCredentials.delete(`${ENROLLMENTS_API}/${courseId}`);
 };
 
-// check if the user is enrolled in a course
+// check if the user is enrolled in a course, not used in dashboard because I found it is not necessary.
 export const isEnrolledInCourse = async (courseId: string) => {
   const response = await axiosWithCredentials.get(`${ENROLLMENTS_API}/${courseId}`);
   return response.data.enrolled;

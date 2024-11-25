@@ -15,18 +15,25 @@ import * as courseClient from "./Courses/client";
 
 export default function Kanbas() {
   // const [courses, setCourses] = useState<any[]>(db.courses);
-  const [courses, setCourses] = useState<any[]>([]);
+  const [mycourses, setCourses] = useState<any[]>([]);
+
+  const [allCourses, setAllCourses] = useState<any[]>([]);
 
   const { currentUser } = useSelector((state: any) => state.accountReducer); 
 
   const fetchCourses = async () => {
-    try {
-      const courses = await courseClient.fetchAllCourses();
-      setCourses(courses);
-    } catch (error) {
-      console.error(error);
-    }
+      try {
+        const mycourses = await userClient.findMyCourses();
+        setCourses(mycourses);
+
+        const courses = await courseClient.fetchAllCourses();
+        setAllCourses(courses);
+
+      } catch (error) {
+        console.error(error);
+      }
   };
+
   useEffect(() => {
     fetchCourses();
   }, [currentUser]);
@@ -41,7 +48,7 @@ export default function Kanbas() {
     const newCourse = await userClient.createCourse(course);
     // const newCourse = { ...course,
     //                     _id: new Date().getTime().toString() };
-    setCourses([...courses, newCourse ]);
+    setCourses([...mycourses, newCourse ]);
   };
 
   const deleteCourse = async (courseId: string) => {
@@ -50,7 +57,7 @@ export default function Kanbas() {
       // verify that the status code is 204
       if (status === 204) {
         // after deleting the course, update the state
-        setCourses(courses.filter((course) => course._id !== courseId));
+        setCourses(mycourses.filter((course) => course._id !== courseId));
       } else {
         // if the status code is not 204, log an error and alert the user
         console.error("Failed to delete course on server. Status:", status);
@@ -66,7 +73,7 @@ export default function Kanbas() {
   const updateCourse = async () => {
     await courseClient.updateCourse(course);
     setCourses(
-      courses.map((c) => {
+      mycourses.map((c) => {
         if (c._id === course._id) {
           return course;
         } else {
@@ -81,7 +88,7 @@ export default function Kanbas() {
     const { cid } = useParams(); // Extract `cid` parameter
     return (
       <ProtectedRoute courseId={cid}>
-        <Courses courses={courses} />
+        <Courses courses={mycourses} />
       </ProtectedRoute>
     );
   };
@@ -98,12 +105,14 @@ export default function Kanbas() {
               <Route path="/Dashboard" element={
                 <ProtectedRoute>
                   <Dashboard
-                    courses={courses}
+                    mycourses={mycourses}
+                    allCourses={allCourses}
                     course={course}
                     setCourse={setCourse}
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}
+                    fetchCourses={fetchCourses}
                   />
                 </ProtectedRoute>
               } /> 
