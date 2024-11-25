@@ -27,18 +27,6 @@ export default function Dashboard(
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   // const { enrollments } = db;
   // const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-
-  // const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
-
-  // useEffect(() => {
-  //   const fetchEnrollments = async () => {
-  //     if (currentUser && currentUser.role === "STUDENT") {
-  //       const enrollmentsData = await enrollmentsClient.fetchMyCourses();
-  //       setEnrolledCourses(enrollmentsData);
-  //     }
-  //   };
-  //   fetchEnrollments();
-  // }, [currentUser]);
   
   const [showAllCourses, setShowAllCourses] = useState(false);
 
@@ -55,20 +43,6 @@ export default function Dashboard(
         : mycourses  // show only the enrolled courses
       : mycourses; // show all courses for non-students
 
-
-  // const handleEnroll = async (courseId: string) => {
-  //   await enrollmentsClient.enrollInCourse(courseId);
-  //   //update the enrolled courses
-  //   const enrollmentsData = await enrollmentsClient.fetchMyCourses();
-  //   setEnrolledCourses(enrollmentsData);
-  //   };
-
-  // const handleUnenroll = async (courseId: string) => {
-  //   await enrollmentsClient.unenrollFromCourse(courseId);
-  //   // update the enrolled courses
-  //   const enrollmentsData = await enrollmentsClient.fetchMyCourses();
-  //   setEnrolledCourses(enrollmentsData);
-  // };
 
   const handleEnroll = async (courseId: string) => {
     await enrollmentsClient.enrollInCourse(courseId);
