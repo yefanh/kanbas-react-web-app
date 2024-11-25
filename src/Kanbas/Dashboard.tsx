@@ -35,14 +35,12 @@ export default function Dashboard(
     setShowAllCourses(!showAllCourses);
   };
   
-
   const filteredCourses =
     currentUser.role === "STUDENT" // check if the user is a student
       ? showAllCourses
         ? allCourses // show all courses
         : mycourses  // show only the enrolled courses
       : mycourses; // show all courses for non-students
-
 
   const handleEnroll = async (courseId: string) => {
     await enrollmentsClient.enrollInCourse(courseId);
@@ -53,7 +51,6 @@ export default function Dashboard(
     await enrollmentsClient.unenrollFromCourse(courseId);
     await fetchCourses(); // update mycourses
   };
-  
 
   return (
     <div id="wd-dashboard">

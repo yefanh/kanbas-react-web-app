@@ -54,8 +54,7 @@ export default function Kanbas() {
   const deleteCourse = async (courseId: string) => {
     try {
       const status = await courseClient.deleteCourse(courseId);
-      // verify that the status code is 204
-      if (status === 204) {
+      if (status >= 200 && status < 300){
         // after deleting the course, update the state
         setCourses(mycourses.filter((course) => course._id !== courseId));
       } else {
