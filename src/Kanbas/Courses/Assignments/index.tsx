@@ -1,5 +1,6 @@
 //kanbas-react-web-app/src/Kanbas/Courses/Assignments/index.tsx
-import { useParams } from "react-router";  // import the useParams hook
+// import { useParams } from "react-router";  // import the useParams hook
+import { useParams } from "react-router-dom"; 
 import { useSelector,useDispatch } from "react-redux";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButton from "./AssignmentControlButtons";
@@ -12,7 +13,8 @@ import { setAssignments, deleteAssignment } from "./reducer";
 
 export default function Assignments() {
   // use the useParams hook to get the course id
-  const { cid } = useParams();
+  // const { cid } = useParams();
+  const { cid } = useParams<{ cid: string }>();
   const dispatch = useDispatch();
 
   const assignments = useSelector(

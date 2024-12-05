@@ -7,8 +7,28 @@ import PeopleDetails from "./Details";
 import { Link } from "react-router-dom";
 import { findUsersForCourse } from "../../Courses/client";
 
+interface PeopleTableProps {
+  users?: any[]; // 可选的 users 属性
+}
 
-export default function PeopleTable({ users = [] }: { users?: any[] }) {
+export default function PeopleTable({ users }: PeopleTableProps) {
+  const { cid } = useParams<{ cid: string }>(); // 获取课程 ID
+  const [stateUsers, setStateUsers] = useState<any[]>(users || []);
+
+  useEffect(() => {
+    // 如果没有传入 users 属性，且存在 cid，则获取课程的用户列表
+    if (!users && cid) {
+      const fetchUsersForCourse = async () => {
+        try {
+          const enrolledUsers = await findUsersForCourse(cid);
+          setStateUsers(enrolledUsers);
+        } catch (error) {
+          console.error("Failed to fetch users for course:", error);
+        }
+      };
+      fetchUsersForCourse();
+    }
+  }, [users, cid]);
 
   return (
     <div id="wd-people-table">
@@ -18,10 +38,7 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
           <tr><th>Name</th><th>Login ID</th><th>Section</th><th>Role</th><th>Last Activity</th><th>Total Activity</th></tr>
         </thead>
         <tbody>
-        {users
-          // .filter((usr) =>
-          //   enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid)
-          // )
+        {stateUsers
           .map((user: any) => (
             <tr key={user._id}>
               <td className="wd-full-name text-nowrap">

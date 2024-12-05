@@ -1,7 +1,7 @@
 //kanbas-react-web-app/src/Kanbas/Courses/Assignments/reducer.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// 定义 Assignment 接口
+// define assignment interface
 interface Assignment {
   _id: string;
   course: string;
@@ -11,10 +11,10 @@ interface Assignment {
   dueDate: string;
   availableFrom: string;
   availableUntil: string;
-  // 根据需要添加其他字段
+ 
 }
 
-// 定义状态接口
+// define assignments state
 interface AssignmentsState {
   assignments: Assignment[];
 }
