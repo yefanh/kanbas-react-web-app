@@ -1,14 +1,15 @@
 // src/Kanbas/Courses/People/Table.tsx
 import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // import * as db from "../../Database";
 import PeopleDetails from "./Details";
 import { Link } from "react-router-dom";
+import { findUsersForCourse } from "../../Courses/client";
+
 
 export default function PeopleTable({ users = [] }: { users?: any[] }) {
-  // const { cid } = useParams();
-  // const { users, enrollments } = db;
+
   return (
     <div id="wd-people-table">
       <PeopleDetails />
@@ -37,7 +38,7 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
               <td className="wd-total-activity">{user.totalActivity}</td>
             </tr>
           ))}
-      </tbody>
+        </tbody>
 
       </table>
     </div> );}

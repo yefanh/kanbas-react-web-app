@@ -19,6 +19,7 @@ export default function PeopleDetails() {
 
   const [name, setName] = useState("");
   const [editing, setEditing] = useState(false);
+  
   const saveUser = async () => {
     const [firstName, lastName] = name.split(" ");
     const updatedUser = { ...user, firstName, lastName };

@@ -8,7 +8,7 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from 'react-icons/fa';
 import PeopleTable from "./People/Table";
 
-export default function Courses({ courses }: { courses: any[]; }) { // don't load courses from Database accept courses from Kanbas
+export default function Courses({courses}: { courses: any[]; }) { // don't load courses from Database accept courses from Kanbas
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);  // find the course by its ID
   const { pathname } = useLocation();
@@ -31,9 +31,8 @@ export default function Courses({ courses }: { courses: any[]; }) { // don't loa
               <Route path="Modules" element={<Modules />} />
               <Route path="Assignments" element={<Assignments />} />
               <Route path="Assignments/Editor" element={<AssignmentEditor />} />
-
               <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-              <Route path="People" element={<PeopleTable />} />
+              <Route path="People" element={<PeopleTable/>}  />
             </Routes>
         </div>
       </div>

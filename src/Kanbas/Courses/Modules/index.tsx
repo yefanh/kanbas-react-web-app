@@ -45,7 +45,7 @@ export default function Modules() {
   }, []);
 
   // filter modules by course ID
-  // const filteredModules = modules.filter((module: any) => module.course === cid);
+  const filteredModules = modules.filter((module: any) => module.course === cid);
   
   return (
     <div className="wd-modules container-fluid">

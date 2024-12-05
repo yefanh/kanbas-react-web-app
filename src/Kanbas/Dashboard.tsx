@@ -2,8 +2,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { enrollCourse, unenrollCourse } from "./Enrollments/reducer";
-import * as enrollmentsClient from "./Enrollments/client";
 
 // define the Course interface
 interface Course {
@@ -15,46 +13,54 @@ interface Course {
   department: string;
   credits: number;
   description: string;
+  enrolled?: boolean; 
 }
 
 export default function Dashboard(
-  { mycourses, allCourses, course, setCourse, addNewCourse, deleteCourse, updateCourse, fetchCourses }: {
-  mycourses: any[]; allCourses: any[]; course: any; setCourse: (course: any) => void;
-  addNewCourse: () => void; deleteCourse: (course: any) => void;
-  updateCourse: () => void; fetchCourses: () => void;}) 
+  { mycourses, 
+    allCourses, 
+    course, 
+    setCourse, 
+    addNewCourse, 
+    deleteCourse, 
+    updateCourse, 
+    fetchCourses, 
+    enrolling, 
+    setEnrolling, 
+    updateEnrollment 
+     }: {
+    mycourses: any[]; 
+    allCourses: any[]; 
+    course: any; 
+    setCourse: (course: any) => void;
+    addNewCourse: () => void; 
+    deleteCourse: (course: any) => void;
+    updateCourse: () => void; 
+    fetchCourses: () => void; 
+    enrolling: boolean; 
+    setEnrolling: (enrolling: boolean) => void;
+    updateEnrollment: (courseId: string, enrolled: boolean) => void 
+     }) 
   {  
-  // const dispatch = useDispatch();
+    
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  // const { enrollments } = db;
-  // const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-  
-  const [showAllCourses, setShowAllCourses] = useState(false);
 
-  // change the state of showAllCourses
-  const toggleEnrollments = () => {
-    setShowAllCourses(!showAllCourses);
-  };
+  const [showAllCourses, setShowAllCourses] = useState(false);
   
   const filteredCourses =
     currentUser.role === "STUDENT" // check if the user is a student
       ? showAllCourses
         ? allCourses // show all courses
         : mycourses  // show only the enrolled courses
-      : mycourses; // show all courses for non-students
-
-  const handleEnroll = async (courseId: string) => {
-    await enrollmentsClient.enrollInCourse(courseId);
-    await fetchCourses(); // update mycourses
-  };
-  
-  const handleUnenroll = async (courseId: string) => {
-    await enrollmentsClient.unenrollFromCourse(courseId);
-    await fetchCourses(); // update mycourses
-  };
+      : mycourses; // show courses for non-students
 
   return (
     <div id="wd-dashboard">
-      <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      <h1 id="wd-dashboard-title">Dashboard
+        <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+            {enrolling ? "My Courses" : "All Courses"}
+        </button>
+      </h1> <hr />
 
       {currentUser && currentUser.role === "FACULTY" && (
         <>
@@ -85,22 +91,11 @@ export default function Dashboard(
         <h2 id="wd-dashboard-published" className="mb-0">
           Published Courses ({allCourses.length})
         </h2>
-
-        {currentUser && currentUser.role === "STUDENT" && (
-          <button 
-            className="btn btn-primary"
-            onClick={toggleEnrollments}
-          >
-            {showAllCourses ? "My Courses" : "Enrollment"}
-          </button>
-        )}
-
       </div>
       <hr />
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
         {filteredCourses.map((course: Course) => { 
-            const isEnrolled = mycourses.some((myCourse: Course) => myCourse._id === course._id);
             return (
               <div key={course._id} className="wd-dashboard-course col" style={{ width: "300px" }}>
                 <div className="card rounded-3 overflow-hidden">
@@ -109,6 +104,15 @@ export default function Dashboard(
                     <img src="/images/reactjs.jpg" width="100%" height={160} />
                     <div className="card-body">
                       <h5 className="wd-dashboard-course-title card-title">
+                      {enrolling && (
+                        <button onClick={(event) => {
+                                  event.preventDefault();
+                                  updateEnrollment(course._id, !course.enrolled);
+                                }}
+                                className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                          {course.enrolled ? "Unenroll" : "Enroll"}
+                        </button>
+                      )}
                         {course.name} </h5>
                       <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
                         {course.description} </p>
@@ -132,28 +136,6 @@ export default function Dashboard(
                             className="btn btn-warning me-2 float-end" >
                             Edit
                           </button>
-                        </>
-                      )}
-
-                      {currentUser && currentUser.role === "STUDENT" && (
-                        <>
-                          {isEnrolled ? (
-                            <button className="btn btn-danger" 
-                                    onClick={(event) => {
-                                      event.preventDefault(); // prevent Link default behavior
-                                      handleUnenroll(course._id);
-                                    }}>
-                              Unenroll
-                            </button>
-                          ) : (
-                            <button className="btn btn-success" 
-                                    onClick={(event) => {
-                                      event.preventDefault(); // prevent Link default behavior
-                                      handleEnroll(course._id);
-                                    }}>
-                              Enroll
-                            </button>
-                          )}
                         </>
                       )}
                     </div>
