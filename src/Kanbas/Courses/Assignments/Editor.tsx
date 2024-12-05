@@ -87,7 +87,7 @@ export default function AssignmentEditor() {
         onChange={(e) => setTitle(e.target.value)}
         placeholder="New Assignment"
         className="form-control mb-4"
-        readOnly = {role !== "FACULTY"}
+        readOnly = {role !== "FACULTY" && role !== "ADMIN"}
       />
 
       {/* Assignment Description */}
@@ -101,7 +101,7 @@ export default function AssignmentEditor() {
         className="form-control mb-4"
         placeholder="New Assignment Description"
         style={{ height: 'auto', whiteSpace: 'pre-wrap' }}
-        readOnly = {role !== "FACULTY"}
+        readOnly = {role !== "FACULTY" && role !== "ADMIN"}
       />
 
 
@@ -119,7 +119,7 @@ export default function AssignmentEditor() {
             value={points}
             onChange={(e) => setPoints(Number(e.target.value))}
             className="form-control mb-3"
-            readOnly = {role !== "FACULTY"}
+            readOnly = {role !== "FACULTY" && role !== "ADMIN"}
           />
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function AssignmentEditor() {
                 type="datetime-local"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                readOnly = {role !== "FACULTY"}
+                readOnly = {role !== "FACULTY" && role !== "ADMIN"}
                 className="form-control"
               />
             </div>
@@ -157,7 +157,7 @@ export default function AssignmentEditor() {
                   value={availableFrom}
                   onChange={(e) => setAvailableFrom(e.target.value)}
                   className="form-control"
-                  readOnly = {role !== "FACULTY"}
+                  readOnly = {role !== "FACULTY" && role !== "ADMIN"}
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -170,7 +170,7 @@ export default function AssignmentEditor() {
                   value={availableUntil}
                   onChange={(e) => setAvailableUntil(e.target.value)}
                   className="form-control"
-                  readOnly = {role !== "FACULTY"}
+                  readOnly = {role !== "FACULTY" && role !== "ADMIN"} 
                 />
               </div>
             </div>

@@ -22,7 +22,7 @@ export default function AssignmentsControls() {
         />
       </div>
       {/* Group and Assignment Buttons */}
-      {role === "FACULTY" && (
+      {role === "FACULTY" || role === "ADMIN" && (
         <div>
           <button
             id="wd-add-assignment-group"

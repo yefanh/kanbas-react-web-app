@@ -42,7 +42,7 @@ export default function Dashboard(
     updateEnrollment: (courseId: string, enrolled: boolean) => void 
      }) 
   {  
-    
+
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
   const [showAllCourses, setShowAllCourses] = useState(false);
@@ -104,7 +104,7 @@ export default function Dashboard(
                     <img src="/images/reactjs.jpg" width="100%" height={160} />
                     <div className="card-body">
                       <h5 className="wd-dashboard-course-title card-title">
-                      {enrolling && (
+                      {enrolling && (currentUser.role === "STUDENT" || currentUser.role === "ADMIN")&& (
                         <button onClick={(event) => {
                                   event.preventDefault();
                                   updateEnrollment(course._id, !course.enrolled);
@@ -118,7 +118,7 @@ export default function Dashboard(
                         {course.description} </p>
                       <button className="btn btn-primary"> Go </button>
 
-                      {currentUser && currentUser.role === "FACULTY" && (
+                      {currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN" && (
                         <>
                           <button onClick={(event) => {
                                     event.preventDefault();

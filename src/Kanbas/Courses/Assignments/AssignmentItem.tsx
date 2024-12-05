@@ -46,7 +46,7 @@ const AssignmentItem: React.FC<AssignmentItemProps> = ({
       {/* left side button*/}
       <div className="d-flex align-items-center gap-2">
         <BsGripVertical className="fs-5 text-muted" />
-        {role === "FACULTY" && <LuFileEdit className="fs-5 text-success" />}
+        {role === "FACULTY" && role === "ADMIN" && <LuFileEdit className="fs-5 text-success" />}
       </div>
       
       {/* middle content */}
@@ -61,7 +61,7 @@ const AssignmentItem: React.FC<AssignmentItemProps> = ({
       
       {/* right side button*/}
       <div className="d-flex align-items-center">
-        {role === "FACULTY" && (
+        {(role === "FACULTY" || role === "ADMIN") && (
             <button
               onClick={handleDelete}
               className="btn btn-link text-danger me-2"
