@@ -50,7 +50,7 @@ export default function Modules() {
   return (
     <div className="wd-modules container-fluid">
       
-      {currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN" && (
+      {(currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && (
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={createModuleForCourse} />
       )}
 
@@ -84,7 +84,7 @@ export default function Modules() {
                       defaultValue={module.name}/>
               )}
 
-              {currentUser && currentUser.role === "FACULTY" && (
+              {(currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && (
               
               <ModuleControlButtons 
                 moduleId={module._id}  
