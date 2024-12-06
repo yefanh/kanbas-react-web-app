@@ -52,7 +52,7 @@ export default function Assignments() {
             <BsGripVertical className="me-2 fs-3" />
             <MdArrowDropDown className="me-2 fs-3" />
             ASSIGNMENTS
-            {role === "FACULTY"|| role === "ADMIN" && <AssignmentsControlButton />}
+            {(role === "FACULTY"|| role === "ADMIN") && <AssignmentsControlButton />}
           </div>
 
           <ul id="wd-assignments-list" className="list-group rounded-0">
