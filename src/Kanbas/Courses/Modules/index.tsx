@@ -66,7 +66,7 @@ export default function Modules() {
               if "Enter" key is pressed then set editing field to false so we hide the text field */}
               {!module.editing && module.name}
 
-              { module.editing  && currentUser && currentUser.role === "FACULTY" && (
+              { module.editing  && (currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && (
                 <input className="form-control w-50 d-inline-block"
 
                       onChange={(e) =>
