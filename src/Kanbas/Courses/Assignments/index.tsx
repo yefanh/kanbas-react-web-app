@@ -27,7 +27,10 @@ export default function Assignments() {
   // get the assignments for the course
   const fetchAssignments = async () => {
     const assignments = await assignmentsClient.findAssignmentsForCourse(cid as string);
-    dispatch(setAssignments(assignments));
+    // make sure the assignments is an array
+    const assignmentsArray = Array.isArray(assignments) ? assignments : [];
+    // dispatch(setAssignments(assignments));
+    dispatch(setAssignments(assignmentsArray));
   };
 
   useEffect(() => {
@@ -40,6 +43,11 @@ export default function Assignments() {
     await assignmentsClient.deleteAssignment(assignmentId);
     dispatch(deleteAssignment(assignmentId));
   };
+
+  // if the assignments is not an array, return a message
+  if (!Array.isArray(assignments)) {
+    return <div>assignments data is loading or unavailable...</div>;
+  }
 
   return (
     <div className="container">

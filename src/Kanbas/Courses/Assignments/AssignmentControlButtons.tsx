@@ -11,7 +11,7 @@ export default function AssignmentsControlButton() {
   const role = currentUser ? currentUser.role : null;
 
   // if the user is not a faculty, return null
-  if (role !== "FACULTY"&& role !== "ADMIN" ) {
+  if (role !== "FACULTY" && role !== "ADMIN" ) {
     return null;
   }
 

@@ -10,8 +10,24 @@ import PeopleTable from "./People/Table";
 
 export default function Courses({courses}: { courses: any[]; }) { // don't load courses from Database accept courses from Kanbas
   const { cid } = useParams();
-  const course = courses.find((course) => course._id === cid);  // find the course by its ID
+  // const course = courses.find((course) => course._id === cid);  // find the course by its ID
   const { pathname } = useLocation();
+  // when the course ID is missing, show an error message
+  if (!cid) {
+    return <div>course ID is missing...</div>;
+  }
+
+  if (!courses || courses.length === 0) {
+    return <div>courses are loading...</div>;
+  }
+
+  // filter out invalid courses
+  const validCourses = courses.filter((c) => c && c._id);
+  const course = validCourses.find((c) => c._id === cid);
+
+  if (!course) {
+    return <div>cannnot find the course...</div>;
+  }
   return (
     <div id="wd-courses">
       <h2 className="text-danger">

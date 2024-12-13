@@ -62,7 +62,7 @@ export default function Dashboard(
         </button>
       </h1> <hr />
 
-      {currentUser && currentUser.role === "FACULTY" && (
+      {currentUser && (currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && (
         <>
           <h5>New Course
               <button className="btn btn-primary float-end"
@@ -95,7 +95,9 @@ export default function Dashboard(
       <hr />
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-        {filteredCourses.map((course: Course) => { 
+        {/* {filteredCourses.map((course: Course) => {  */}
+        {filteredCourses.map((course: Course | null) => {
+          if (!course || !course._id) return null; // check if the course is null
             return (
               <div key={course._id} className="wd-dashboard-course col" style={{ width: "300px" }}>
                 <div className="card rounded-3 overflow-hidden">
@@ -118,7 +120,7 @@ export default function Dashboard(
                         {course.description} </p>
                       <button className="btn btn-primary"> Go </button>
 
-                      {currentUser && currentUser.role === "FACULTY" || currentUser.role === "ADMIN" && (
+                      {currentUser && (currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && (
                         <>
                           <button onClick={(event) => {
                                     event.preventDefault();

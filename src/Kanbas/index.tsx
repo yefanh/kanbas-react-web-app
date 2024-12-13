@@ -53,7 +53,8 @@ export default function Kanbas() {
   
   const fetchCourses = async () => {
     try {
-      const allCourses = await courseClient.fetchAllCourses();
+      const allCourses= await courseClient.fetchAllCourses();
+      console.log("Fetched all courses:", allCourses);
       const enrolledCourses = await userClient.findCoursesForUser(
         currentUser._id
       );
@@ -65,25 +66,14 @@ export default function Kanbas() {
         }
       });
       setCourses(courses);
+      
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const fetchCourses = async () => {
-  //     try {
-  //       const mycourses = await userClient.findMyCourses();
-  //       setCourses(mycourses);
-
-  //       const courses = await courseClient.fetchAllCourses();
-  //       setCourses(courses);
-  //       // setAllCourses(courses);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  // };
-
   useEffect(() => {
+    if (!currentUser) return;
     if (enrolling) {
       fetchCourses();
     } else {

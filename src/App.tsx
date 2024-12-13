@@ -1,4 +1,4 @@
-//src/Labs/Lab4/PassingFunctions.tsx
+//kanbas-react-web-app/src/App.tsx
 import React from "react";
 import store from "./Kanbas/store"; // import the redux store
 import { Provider } from "react-redux"; //import the redux store provider

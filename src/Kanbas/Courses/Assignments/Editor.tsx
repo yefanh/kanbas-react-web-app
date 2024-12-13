@@ -70,6 +70,7 @@ export default function AssignmentEditor() {
         course: courseId,
       };
       const createdAssignment = await assignmentsClient.createAssignmentForCourse(courseId, newAssignment);
+      console.log("Created Assignment:", createdAssignment);
       dispatch(addAssignment(createdAssignment));
     }
     navigate(`/Kanbas/Courses/${courseId}/Assignments`);
