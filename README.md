@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# Kanbas React Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains 6 branches illustrating the progressive development of a web application named Kanbas, an Online Learning Management System (OLMS) inspired by Canvas, implemented using modern web technologies such as React.js, TypeScript, Node.js, Express, and MongoDB.
 
-## Available Scripts
+## Project Structure
 
-In the project directory, you can run:
+The repository includes multiple branches, each representing a distinct development phase and technology focus:
 
-### `npm start`
+### Branches Overview:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+| Branch | Technologies and Concepts | Description |
+|--------|---------------------------|-------------|
+| `a1` | HTML, React.js | Implementing basic user interfaces using HTML and initial setup of React.js components. |
+| `a2` | CSS, Bootstrap | Styling web pages using CSS and Bootstrap to achieve responsive and appealing designs. |
+| `a3` | React Router, JavaScript Basics | Creating Single Page Applications (SPAs) with dynamic user interaction through React Router. |
+| `a4` | State Management, Redux | Managing component and application state effectively using React hooks and Redux state management. |
+| `a5` | Node.js, Express, REST APIs | Building backend HTTP servers and implementing RESTful APIs with Node.js and Express to handle client-server interactions. |
+| `a6` | MongoDB, Mongoose | Integrating a MongoDB database to store, manage, and retrieve data efficiently using Mongoose ODM. |
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation and Setup
 
-### `npm test`
+1. Clone the repository:
+   ```sh
+   git clone [your-repository-url]
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Navigate into your desired branch:
+   ```sh
+   git checkout [branch-name]
+   ```
 
-### `npm run build`
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Run the application:
+   ```sh
+   npm start
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Deployment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Each branch is deployed separately using Netlify and Render.com, providing an easy way to view the application's evolution online. Ensure the deployment configurations in Netlify and Render.com correspond to the respective branch.
 
-### `npm run eject`
+## Technologies
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- **Frontend**: React.js, TypeScript, HTML, CSS, Bootstrap, React Router, Redux
+- **Backend**: Node.js, Express
+- **Database**: MongoDB, Mongoose
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
