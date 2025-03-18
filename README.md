@@ -1,5 +1,7 @@
 # Kanbas React Web Application
 
+Deployed in Netlify: starlit-semifreddo-4476e0.netlify.app/
+
 This repository contains 6 branches illustrating the progressive development of a web application named Kanbas, an Online Learning Management System (OLMS) inspired by Canvas, implemented using modern web technologies such as React.js, TypeScript, Node.js, Express, and MongoDB.
 
 ## Project Structure
